@@ -113,6 +113,7 @@
     }
     .lbtn.active, .lbtn:hover { border-color: var(--accent); color: var(--accent); }
     .lbtn.loading { opacity: .4; pointer-events: none; }
+    .header-cta {
       font-family: var(--font-m); font-size: .6rem;
       letter-spacing: .16em; text-transform: uppercase;
       color: var(--accent); border: 1px solid rgba(212,168,75,.4);
@@ -827,7 +828,7 @@
         <div class="hl-line" id="hl2">DON'T</div>
         <div class="hl-line" id="hl3">KNOW</div>
         <div class="hl-line" id="hl4">WHAT</div>
-        <div class="hl-line" id="hl5">TO DO.</div>
+        <div class="hl-line" id="hl5">TO DO</div>
         <div class="hl-line hl-wedo" id="hl6">
           <span class="wedo-block" id="wedoBlock">WE DO!</span>
         </div>
@@ -978,7 +979,7 @@
         <span class="contact-icon">🔑</span>
         <div class="contact-body">
           <div class="contact-label">Client Portal</div>
-          <div class="contact-sub">Proyex · Bestandskunden</div>
+          <div class="contact-sub">Proyex · Existing clients</div>
         </div>
         <span class="contact-arrow">→</span>
       </a>
@@ -987,24 +988,24 @@
         <div style="display:flex; align-items:center; gap:1rem; width:100%;">
           <span class="contact-icon">✏️</span>
           <div class="contact-body">
-            <div class="contact-label">Nachricht schreiben</div>
+            <div class="contact-label">Write a message</div>
             <div class="contact-sub">andreas@silentmonkey.io</div>
           </div>
         </div>
         <div class="contact-form">
           <div class="cf-field">
             <label>Name</label>
-            <input type="text" id="cfName" placeholder="Wie dürfen wir Sie ansprechen?" autocomplete="off">
+            <input type="text" id="cfName" placeholder="How should we address you?" autocomplete="off">
           </div>
           <div class="cf-field">
-            <label>E-Mail</label>
-            <input type="email" id="cfEmail" placeholder="ihre@email.com" autocomplete="off">
+            <label>Email</label>
+            <input type="email" id="cfEmail" placeholder="your@email.com" autocomplete="off">
           </div>
           <div class="cf-field">
-            <label>Nachricht</label>
-            <textarea id="cfMsg" placeholder="Was möchten Sie uns mitteilen?"></textarea>
+            <label>Message</label>
+            <textarea id="cfMsg" placeholder="What would you like to tell us?"></textarea>
           </div>
-          <button class="cf-submit" onclick="sendContact()">Absenden →</button>
+          <button class="cf-submit" onclick="sendContact()">Send →</button>
         </div>
       </div>
 
@@ -1066,7 +1067,7 @@
           <div class="tl-step">05 · Delivery in Sprints</div>
           <div class="tl-title">Visible Progress · Every Step</div>
           <p class="tl-desc">Each sprint delivers a tangible result. You don't wait for "finished" — you see progress continuously. Every decision is documented and transparent.</p>
-          <span class="scrum-badge">Sprint Review · Iterativ</span>
+          <span class="scrum-badge">Sprint Review · Iterative</span>
         </div>
       </div>
       <div class="tl-item">
@@ -1087,20 +1088,20 @@
        ZONE · FAQ
   ══════════════════════ -->
   <section id="zone-faq">
-    <p class="tag rv">Fragen · Antworten</p>
+    <p class="tag rv" data-i="faq-tag">Questions · Answers</p>
     <h2 class="faq-h rv">THE HONEST<br><em>FAQ.</em></h2>
 
     <div class="faq-grid-2col rv">
-      <div class="faq-q" onclick="showFaq(this,0)">Was beinhaltet eine Strategy Session?</div>
-      <div class="faq-q" onclick="showFaq(this,3)">Wie funktioniert das Projektmanagement?</div>
-      <div class="faq-q" onclick="showFaq(this,1)">Brauche ich technisches Wissen?</div>
-      <div class="faq-q" onclick="showFaq(this,4)">Was unterscheidet euch von einer Agentur?</div>
-      <div class="faq-q" onclick="showFaq(this,2)">Was ist das Website Audit?</div>
-      <div class="faq-q" onclick="showFaq(this,5)">Was kostet es?</div>
+      <div class="faq-q" data-i="faq-q0" onclick="showFaq(this,0)">What does a Strategy Session include?</div>
+      <div class="faq-q" data-i="faq-q3" onclick="showFaq(this,3)">How does project management work?</div>
+      <div class="faq-q" data-i="faq-q1" onclick="showFaq(this,1)">Do I need technical knowledge?</div>
+      <div class="faq-q" data-i="faq-q4" onclick="showFaq(this,4)">What sets you apart from an agency?</div>
+      <div class="faq-q" data-i="faq-q2" onclick="showFaq(this,2)">What is the Website Audit?</div>
+      <div class="faq-q" data-i="faq-q5" onclick="showFaq(this,5)">How much does it cost?</div>
     </div>
     <div class="faq-answer-wrap rv">
       <div class="faq-answer-text" id="faqAnswer">
-        <span class="faq-answer-empty">← Frage auswählen</span>
+        <span class="faq-answer-empty" data-i="faq-pick">← Pick a question</span>
       </div>
     </div>
   </section>
@@ -1199,16 +1200,27 @@
         'cta-btn': 'Schedule Consulting →',
         'intake-title': 'YOUR TURN.',
         'intake-sub': 'WE\'RE READY.',
+        'faq-tag': 'Questions · Answers',
+        'faq-q0': 'What does a Strategy Session include?',
+        'faq-q1': 'Do I need technical knowledge?',
+        'faq-q2': 'What is the Website Audit?',
+        'faq-q3': 'How does project management work?',
+        'faq-q4': 'What sets you apart from an agency?',
+        'faq-q5': 'How much does it cost?',
+        'faq-pick': '← Pick a question',
       }
     };
 
     async function translatePage(lang) {
-      if (lang === 'en') { applyLang(translations.en); return; }
-      if (langCache[lang]) { applyLang(langCache[lang]); return; }
+      if (lang === 'en') { faqAnswers = [...faqAnswersEN]; applyLang(translations.en); return; }
+      if (langCache[lang]) { faqAnswers = faqAnswersCache[lang] || faqAnswersEN; applyLang(langCache[lang]); return; }
 
       document.querySelectorAll('.lbtn').forEach(b => b.classList.add('loading'));
 
       const langNames = { de: 'German', es: 'Spanish' };
+      const payload = { ...translations.en };
+      faqAnswersEN.forEach((a, i) => payload['faq-a' + i] = a);
+
       try {
         const res = await fetch('https://api.anthropic.com/v1/messages', {
           method: 'POST',
@@ -1218,18 +1230,21 @@
           },
           body: JSON.stringify({
             model: 'claude-sonnet-4-20250514',
-            max_tokens: 1000,
+            max_tokens: 2000,
             messages: [{
               role: 'user',
-              content: `Translate these JSON values into ${langNames[lang]}. Keep all HTML tags, brand names (Silent Monkey, Ghost, Squarespace, Proyex, cal.eu), arrows (→), and the middle dot (·) unchanged. Return ONLY a valid JSON object. No markdown, no backticks.\n\n${JSON.stringify(translations.en)}`
+              content: `Translate these JSON values into ${langNames[lang]}. Keep all HTML tags, brand names (Silent Monkey, Ghost, Squarespace, Proyex, cal.eu), arrows (→), and the middle dot (·) unchanged. Return ONLY a valid JSON object. No markdown, no backticks.\n\n${JSON.stringify(payload)}`
             }]
           })
         });
         const data = await res.json();
         const raw = data.content[0].text.trim();
         const clean = raw.replace(/^```json\s*/,'').replace(/^```\s*/,'').replace(/```\s*$/,'').trim();
-        langCache[lang] = JSON.parse(clean);
-        applyLang(langCache[lang]);
+        const parsed = JSON.parse(clean);
+        langCache[lang] = parsed;
+        faqAnswersCache[lang] = faqAnswersEN.map((_, i) => parsed['faq-a' + i] || faqAnswersEN[i]);
+        faqAnswers = faqAnswersCache[lang];
+        applyLang(parsed);
       } catch(e) {
         console.error('Translation error:', e);
         applyLang(translations.en);
@@ -1254,7 +1269,7 @@
     (function() {
       const lines = [
         document.getElementById('hl6'), // WE DO! block — appears first
-        document.getElementById('hl5'), // TO DO.
+        document.getElementById('hl5'), // TO DO
         document.getElementById('hl4'), // WHAT
         document.getElementById('hl3'), // KNOW
         document.getElementById('hl2'), // DON'T
@@ -1292,14 +1307,16 @@
     window.addEventListener('scroll',()=>{ if(hg) hg.style.transform=`translate(-50%, calc(-50% + ${scrollY*.025}px))`; },{passive:true});
 
     // ── FAQ ──
-    const faqAnswers=[
-      'Eine fokussierte 60-minütige Arbeitssession. Wir analysieren Ihr aktuelles digitales Setup, identifizieren die größten Lücken und definieren eine konkrete Roadmap. Sie verlassen das Gespräch mit einer schriftlichen Zusammenfassung und klaren Prioritäten — kein Sales-Pitch.',
-      'Nein. Wir übersetzen zwischen der technischen und der menschlichen Seite. Egal ob Coach, Kulturprojekt oder Hotellerie — wir treffen Sie dort, wo Sie sind.',
-      'Eine strukturierte Analyse Ihrer Website: Performance, SEO, technische Gesundheit und KI/Such-Sichtbarkeit. Sie erhalten einen bewerteten Report mit priorisierten Empfehlungen — sofort umsetzbar oder an einen Entwickler weiterleitbar.',
-      'Jedes Projekt läuft über Proyex — unser Client-Portal unter portal.silentmonkey.io. Sie haben Echtzeit-Zugang zu Meilensteinen, Deliverables und Kommunikation. Kein E-Mail-Chaos. Kein Rätselraten über den Stand.',
-      'Keine Retainer. Keine Vertragsbindung. Jedes Engagement beginnt mit einem kostenlosen Gespräch, führt zu einem individuellen Angebot und endet wenn die Arbeit getan ist. Jederzeit wieder einstieg möglich — kein Druck.',
-      'Das Audit ist immer kostenlos. Consulting und Projekte starten ab €500 — individuell kalkuliert, fixer Scope, keine Überraschungen. Stundenpakete: 5h · 10h · 20h à €65/h.'
+    const faqAnswersEN=[
+      'A focused 60-minute working session. We analyse your current digital setup, identify the biggest gaps, and define a concrete roadmap. You leave with a written summary and clear priorities — no sales pitch.',
+      'No. We translate between the technical and human side. Whether you\'re a coach, cultural project, or hospitality business — we meet you where you are.',
+      'A structured analysis of your website: performance, SEO, technical health, and AI/search visibility. You receive a scored report with prioritised recommendations — ready to implement or hand to a developer.',
+      'Every project runs through Proyex — our client portal at portal.silentmonkey.io. You get real-time access to milestones, deliverables, and communication. No email chaos. No guessing about status.',
+      'No retainers. No contract lock-in. Every engagement starts with a free conversation, leads to a tailored proposal, and ends when the work is done. Re-engagement is always possible — never obligatory.',
+      'The audit is always free. Consulting and projects start from €500 — individually calculated, fixed scope, no surprises. Hourly packages: 5h · 10h · 20h at €65/h.'
     ];
+    let faqAnswers = [...faqAnswersEN];
+    let faqAnswersCache = {};
 
     function showFaq(el,idx){
       document.querySelectorAll('.faq-q').forEach(q=>q.classList.remove('active'));
@@ -1314,9 +1331,9 @@
       const name=document.getElementById('cfName').value.trim();
       const email=document.getElementById('cfEmail').value.trim();
       const msg=document.getElementById('cfMsg').value.trim();
-      if(!name||!email||!msg){ alert('Bitte alle Felder ausfüllen.'); return; }
-      const s=encodeURIComponent('Nachricht von '+name);
-      const b=encodeURIComponent('Name: '+name+'\nE-Mail: '+email+'\n\nNachricht:\n'+msg);
+      if(!name||!email||!msg){ alert('Please fill in all fields.'); return; }
+      const s=encodeURIComponent('Message from '+name);
+      const b=encodeURIComponent('Name: '+name+'\nEmail: '+email+'\n\nMessage:\n'+msg);
       window.location.href='mailto:andreas@silentmonkey.io?subject='+s+'&body='+b;
     }
   </script>
