@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Making Of — Silent Monkey Solution</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0c0a;
+    --gold: #d4a84b;
+    --gold-dim: #8a7048;
+    --white: #ede8df;
+    --muted: #8a7b6e;
+    --dim: #4a3f35;
+    --grey-light: #1e1a16;
+    --green: #4a8c5c;
+    --red: #c84b3c;
+    --font-d: 'Bebas Neue', sans-serif;
+    --font-m: 'DM Mono', monospace;
+    --font-s: 'DM Sans', sans-serif;
+    --pad: clamp(1.5rem, 5vw, 3rem);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: var(--font-s);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  ::selection { background: var(--gold); color: var(--bg); }
+
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    pointer-events: none; z-index: 500; opacity: .018;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 180px;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.1rem var(--pad);
+    background: rgba(14,12,10,.92); backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(212,168,75,.08);
+  }
+
+  .nav-logo {
+    font-family: var(--font-d); font-size: 1rem;
+    letter-spacing: .18em; color: var(--white); text-decoration: none;
+    display: flex; align-items: center; gap: .6rem;
+    opacity: .75; transition: opacity .2s;
+  }
+  .nav-logo:hover { opacity: 1; }
+  .nav-logo b { color: var(--gold); font-weight: 400; }
+
+  .nav-back {
+    font-family: var(--font-m); font-size: .6rem;
+    letter-spacing: .16em; text-transform: uppercase;
+    color: var(--gold); border: 1px solid rgba(212,168,75,.35);
+    padding: .45rem 1.1rem; text-decoration: none;
+    transition: background .2s, color .2s;
+  }
+  .nav-back:hover { background: var(--gold); color: var(--bg); }
+
+  /* Floating back pill */
+  .back-pill {
+    position: fixed; bottom: 2rem; left: var(--pad);
+    z-index: 300; opacity: 0; transform: translateY(8px);
+    transition: opacity .4s, transform .4s;
+    font-family: var(--font-m); font-size: .58rem;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--gold); border: 1px solid rgba(212,168,75,.3);
+    background: rgba(14,12,10,.85); backdrop-filter: blur(8px);
+    padding: .5rem 1rem; text-decoration: none;
+  }
+  .back-pill.visible { opacity: 1; transform: none; }
+  .back-pill:hover { background: var(--gold); color: var(--bg); }
+
+  /* ── SHARED ── */
+  .tag {
+    font-family: var(--font-m); font-size: .58rem;
+    letter-spacing: .22em; text-transform: uppercase;
+    color: var(--gold); display: flex; align-items: center;
+    gap: .7rem; margin-bottom: 1.5rem;
+  }
+  .tag::before { content: ''; width: 1.2rem; height: 1px; background: var(--gold); }
+
+  .section-num {
+    font-family: var(--font-m); font-size: .62rem;
+    letter-spacing: .2em; text-transform: uppercase;
+    color: var(--gold-dim); margin-bottom: .75rem;
+  }
+
+  .sep { height: 1px; background: linear-gradient(90deg, transparent, rgba(212,168,75,.15), transparent); }
+
+  .rv { opacity: 0; transform: translateY(1.4rem); transition: opacity .65s ease, transform .65s ease; }
+  .rv.in { opacity: 1; transform: none; }
+  .d1 { transition-delay: .1s; } .d2 { transition-delay: .2s; } .d3 { transition-delay: .3s; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100svh; display: flex; flex-direction: column;
+    justify-content: flex-end; padding: 8rem var(--pad) 4rem;
+    border-bottom: 1px solid var(--grey-light); position: relative; overflow: hidden;
+  }
+
+  .hero-ghost {
+    position: absolute; font-family: var(--font-d);
+    font-size: clamp(10rem, 32vw, 36rem); color: transparent;
+    -webkit-text-stroke: 1px rgba(212,168,75,.04);
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+    white-space: nowrap; pointer-events: none; user-select: none;
+    letter-spacing: -.02em; animation: glow 9s ease-in-out infinite;
+  }
+  @keyframes glow { 0%,100%{opacity:.3} 50%{opacity:.7} }
+
+  .hero-title {
+    font-family: var(--font-d);
+    font-size: clamp(4rem, 12vw, 11rem);
+    line-height: .86; letter-spacing: .02em; color: var(--white);
+    margin-bottom: 2rem; position: relative; z-index: 2;
+  }
+  .hero-title em { color: var(--gold); font-style: normal; display: block; }
+
+  .hero-sub {
+    max-width: 540px; font-size: clamp(.85rem, 1.2vw, 1rem);
+    color: var(--muted); border-left: 2px solid var(--gold);
+    padding-left: 1.5rem; margin-bottom: 2.5rem;
+    position: relative; z-index: 2;
+  }
+
+  .hero-meta {
+    display: grid; grid-template-columns: repeat(4, auto);
+    gap: 2.5rem; flex-wrap: wrap;
+    position: relative; z-index: 2;
+  }
+
+  .meta-item { display: flex; flex-direction: column; gap: .3rem; }
+  .meta-label { font-family: var(--font-m); font-size: .6rem; letter-spacing: .15em; color: var(--gold-dim); text-transform: uppercase; }
+  .meta-value { font-size: .9rem; color: var(--white); }
+
+  /* ── NUMBERS 4+4 ── */
+  .numbers-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1px; background: var(--grey-light);
+    border: 1px solid var(--grey-light); margin-top: 2rem;
+  }
+  .number-item {
+    background: var(--bg); padding: 2rem 1.5rem; text-align: center;
+    transition: background .25s;
+  }
+  .number-item:hover { background: rgba(212,168,75,.04); }
+  .number-value { font-family: var(--font-d); font-size: 3.5rem; color: var(--gold); line-height: 1; display: block; margin-bottom: .5rem; }
+  .number-label { font-family: var(--font-m); font-size: .6rem; letter-spacing: .15em; color: var(--muted); text-transform: uppercase; }
+
+  /* ── SCRUM BOARD ── */
+  .sprint-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--grey-light);
+    border: 1px solid var(--grey-light); margin-top: 2rem;
+  }
+  .sprint-col { background: var(--bg); padding: 1.5rem; }
+  .sprint-col-header {
+    font-family: var(--font-m); font-size: .62rem;
+    letter-spacing: .2em; text-transform: uppercase;
+    padding-bottom: 1rem; margin-bottom: 1rem;
+    border-bottom: 1px solid var(--grey-light);
+  }
+  .sprint-col-header.done  { color: var(--green); }
+  .sprint-col-header.doing { color: var(--gold); }
+  .sprint-col-header.todo  { color: var(--muted); }
+
+  .sprint-card {
+    background: var(--grey-light); padding: .85rem 1rem;
+    margin-bottom: .5rem; border-left: 2px solid transparent;
+    font-size: .8rem; line-height: 1.4;
+  }
+  .sprint-card.done-card  { border-left-color: var(--green); opacity: .75; }
+  .sprint-card.doing-card { border-left-color: var(--gold); }
+  .sprint-card.todo-card  { border-left-color: var(--dim); }
+
+  .card-tag {
+    font-family: var(--font-m); font-size: .56rem;
+    letter-spacing: .1em; color: var(--gold-dim);
+    display: block; margin-bottom: .25rem; text-transform: uppercase;
+  }
+
+  /* ── SWOT ── */
+  .swot-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1px; background: var(--grey-light);
+    border: 1px solid var(--grey-light); margin-top: 2rem;
+  }
+  .swot-cell { background: var(--bg); padding: 2rem 2.5rem; }
+  .swot-label {
+    font-family: var(--font-d); font-size: 2.5rem;
+    letter-spacing: .06em; line-height: 1; margin-bottom: .35rem;
+  }
+  .swot-title {
+    font-family: var(--font-m); font-size: .58rem;
+    letter-spacing: .2em; text-transform: uppercase;
+    margin-bottom: 1.25rem;
+  }
+  .swot-cell:nth-child(1) .swot-label { color: var(--green); }
+  .swot-cell:nth-child(1) .swot-title { color: var(--green); }
+  .swot-cell:nth-child(2) .swot-label { color: var(--gold); }
+  .swot-cell:nth-child(2) .swot-title { color: var(--gold); }
+  .swot-cell:nth-child(3) .swot-label { color: #4a8ab0; }
+  .swot-cell:nth-child(3) .swot-title { color: #4a8ab0; }
+  .swot-cell:nth-child(4) .swot-label { color: var(--red); }
+  .swot-cell:nth-child(4) .swot-title { color: var(--red); }
+
+  .swot-list { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
+  .swot-list li {
+    font-size: .78rem; color: var(--muted); line-height: 1.5;
+    padding-left: 1rem; position: relative;
+  }
+  .swot-list li::before { content: '→'; position: absolute; left: 0; color: var(--gold-dim); font-size: .7rem; }
+
+  /* ── SCRUM EXPLAINER ── */
+  .scrum-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--grey-light);
+    border: 1px solid var(--grey-light); margin-top: 2rem;
+  }
+  .scrum-cell {
+    background: var(--bg); padding: 2rem;
+    transition: background .25s;
+  }
+  .scrum-cell:hover { background: rgba(212,168,75,.03); }
+  .scrum-icon { font-size: 1.5rem; margin-bottom: 1rem; opacity: .7; }
+  .scrum-term {
+    font-family: var(--font-d); font-size: 1.4rem;
+    letter-spacing: .06em; color: var(--gold);
+    margin-bottom: .5rem; line-height: 1;
+  }
+  .scrum-def { font-size: .76rem; color: var(--muted); line-height: 1.8; }
+  .scrum-def strong { color: var(--white); font-weight: 400; }
+
+  /* ── TIMELINE ── */
+  .timeline { margin-top: 2rem; position: relative; }
+  .timeline::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 1px; background: var(--grey-light);
+  }
+  .timeline-item { padding-left: 2rem; padding-bottom: 2.5rem; position: relative; }
+  .timeline-item::before {
+    content: ''; position: absolute; left: -3px; top: 6px;
+    width: 7px; height: 7px; background: var(--gold); border-radius: 50%;
+  }
+  .timeline-date { font-family: var(--font-m); font-size: .62rem; letter-spacing: .15em; color: var(--gold-dim); text-transform: uppercase; margin-bottom: .4rem; }
+  .timeline-title { font-size: .95rem; font-weight: 500; margin-bottom: .4rem; color: var(--white); }
+  .timeline-body { font-size: .82rem; color: var(--muted); max-width: 540px; line-height: 1.8; }
+
+  /* ── TOOLS ── */
+  .tools-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1px; background: var(--grey-light);
+    border: 1px solid var(--grey-light); margin-top: 2rem;
+  }
+  .tool-item { background: var(--bg); padding: 1.5rem; transition: background .2s; }
+  .tool-item:hover { background: rgba(212,168,75,.04); }
+  .tool-category { font-family: var(--font-m); font-size: .56rem; letter-spacing: .15em; color: var(--gold-dim); text-transform: uppercase; margin-bottom: .4rem; }
+  .tool-name { font-size: .95rem; font-weight: 500; color: var(--white); margin-bottom: .25rem; }
+  .tool-name a { color: var(--white); text-decoration: none; border-bottom: 1px solid var(--dim); transition: border-color .2s, color .2s; }
+  .tool-name a:hover { color: var(--gold); border-color: var(--gold); }
+  .tool-desc { font-size: .74rem; color: var(--muted); line-height: 1.5; }
+
+  /* ── QUOTE ── */
+  .quote-block {
+    border-left: 3px solid var(--gold); padding: 1.5rem 2rem;
+    margin: 3rem 0; background: rgba(212,168,75,.03);
+  }
+  .quote-text { font-size: 1.05rem; font-style: italic; color: rgba(237,232,223,.8); line-height: 1.7; margin-bottom: .75rem; }
+  .quote-author { font-family: var(--font-m); font-size: .6rem; letter-spacing: .15em; color: var(--gold-dim); text-transform: uppercase; }
+
+  /* ── CTA ── */
+  .cta-block {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1px; background: var(--grey-light);
+    border: 1px solid var(--grey-light); margin-top: 3rem;
+  }
+  .cta-left { background: var(--bg); padding: 2.5rem; }
+  .cta-right { background: rgba(212,168,75,.04); padding: 2.5rem; display: flex; flex-direction: column; gap: 1rem; justify-content: center; }
+  .cta-title { font-family: var(--font-d); font-size: clamp(1.8rem, 3.5vw, 3rem); line-height: .95; color: var(--white); margin-bottom: 1rem; }
+  .cta-title em { color: var(--gold); font-style: normal; }
+  .cta-sub { font-size: .78rem; color: var(--muted); line-height: 1.8; }
+  .btn-fill { display: inline-block; background: var(--gold); color: var(--bg); font-family: var(--font-m); font-size: .65rem; letter-spacing: .16em; text-transform: uppercase; padding: .9rem 2rem; text-decoration: none; transition: opacity .2s; }
+  .btn-fill:hover { opacity: .85; }
+  .btn-ghost { display: inline-block; background: transparent; color: var(--gold); border: 1px solid rgba(212,168,75,.35); font-family: var(--font-m); font-size: .65rem; letter-spacing: .16em; text-transform: uppercase; padding: .9rem 2rem; text-decoration: none; transition: background .2s; }
+  .btn-ghost:hover { background: rgba(212,168,75,.08); }
+
+  /* ── EXPAND BUTTON ── */
+  .expand-btn {
+    margin-top: 2rem;
+    font-family: var(--font-m); font-size: .68rem;
+    letter-spacing: .18em; text-transform: uppercase;
+    color: var(--gold); background: transparent;
+    border: 1px solid rgba(212,168,75,.35);
+    padding: .75rem 2rem; cursor: pointer;
+    transition: background .2s, color .2s;
+    position: relative; z-index: 2;
+  }
+  .expand-btn:hover { background: var(--gold); color: var(--bg); }
+  .expand-btn.open { border-color: var(--gold-dim); color: var(--gold-dim); }
+
+  /* ── COLLAPSIBLE CONTENT ── */
+  .expand-content {
+    max-height: 0; overflow: hidden;
+    transition: max-height 1s cubic-bezier(.4,0,.2,1);
+  }
+  .expand-content.open { max-height: 9999px; }
+
+  /* ── LIVING DOC BAR ── */
+  .living-doc-bar {
+    border-top: 1px solid var(--grey-light); padding: 1.5rem var(--pad);
+    display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 2rem;
+  }
+  .living-doc-label { font-family: var(--font-m); font-size: .65rem; letter-spacing: .12em; color: var(--gold); text-transform: uppercase; white-space: nowrap; }
+  .living-doc-text { font-size: .8rem; color: rgba(237,232,223,.35); flex: 1; min-width: 200px; }
+  .living-doc-updated { font-family: var(--font-m); font-size: .65rem; color: rgba(237,232,223,.3); white-space: nowrap; }
+  .living-doc-updated strong { color: rgba(237,232,223,.5); font-weight: 400; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--grey-light); padding: 2rem var(--pad);
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-logo { font-family: var(--font-d); font-size: 1rem; letter-spacing: .15em; color: var(--muted); }
+  .footer-logo b { color: var(--gold); font-weight: 400; }
+  .footer-copy { font-family: var(--font-m); font-size: .6rem; letter-spacing: .1em; color: var(--dim); text-align: center; line-height: 1.9; }
+  .f-link { color: var(--dim); text-decoration: none; transition: color .2s; }
+  .f-link:hover { color: var(--gold); }
+
+  /* ── SECTION WRAPPER ── */
+  .section {
+    padding: 5rem var(--pad);
+    border-bottom: 1px solid var(--grey-light);
+    max-width: 1100px; margin: 0 auto;
+  }
+  .section-title {
+    font-family: var(--font-d); font-size: clamp(2.2rem, 5.5vw, 4.5rem);
+    line-height: .9; letter-spacing: .02em; margin-bottom: 2.5rem; margin-top: .5rem;
+  }
+  .section-title em { color: var(--gold); font-style: normal; }
+  .section-body { font-size: .85rem; color: var(--muted); max-width: 600px; line-height: 1.9; margin-bottom: 1rem; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .hero { padding: 6rem 1.5rem 3rem; }
+    .section { padding: 3.5rem 1.5rem; }
+    .hero-meta { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .numbers-grid { grid-template-columns: 1fr 1fr; }
+    .sprint-grid { grid-template-columns: 1fr; }
+    .swot-grid { grid-template-columns: 1fr; }
+    .scrum-grid { grid-template-columns: 1fr; }
+    .cta-block { grid-template-columns: 1fr; }
+    footer { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<a href="https://audit.silentmonkey.io" class="back-pill" id="backPill">← Back to silentmonkey.io</a>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="https://audit.silentmonkey.io" class="nav-logo">
+    SILENT<b>_</b>MONKEY
+  </a>
+  <a href="https://audit.silentmonkey.io" class="nav-back">← Consulting</a>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <span class="hero-ghost" aria-hidden="true">MAKING</span>
+  <p class="tag rv">Case Study · Self-Build</p>
+  <h1 class="hero-title rv">MAKING<br><em>OF.</em></h1>
+  <p class="hero-sub rv d1">
+    How we built silentmonkey.io — from zero to a fully operational boutique consulting presence — using the same tools, methods, and discipline we bring to every client project.
+  </p>
+  <div class="hero-meta rv d2">
+    <div class="meta-item">
+      <span class="meta-label">Client</span>
+      <span class="meta-value">Silent Monkey Solution</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Duration</span>
+      <span class="meta-value">Nov 2025 – Apr 2026</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Method</span>
+      <span class="meta-value">Scrum · Agile</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Status</span>
+      <span class="meta-value">Live · Ongoing</span>
+    </div>
+  </div>
+  <button class="expand-btn rv d3" onclick="toggleExpand()" id="expandBtn">
+    Read the full Making-Of ↓
+  </button>
+</div>
+
+<!-- ── EXPANDABLE CONTENT ── -->
+<div id="expandContent" class="expand-content">
+
+<!-- ── 00 · NUMBERS ── -->
+<div class="section">
+  <div class="section-num">00 · Overview</div>
+  <h2 class="section-title rv">BY THE <em>NUMBERS.</em></h2>
+  <div class="numbers-grid rv">
+    <div class="number-item">
+      <span class="number-value">7</span>
+      <span class="number-label">Sprints</span>
+    </div>
+    <div class="number-item">
+      <span class="number-value">21</span>
+      <span class="number-label">Page Versions</span>
+    </div>
+    <div class="number-item">
+      <span class="number-value">3</span>
+      <span class="number-label">Languages</span>
+    </div>
+    <div class="number-item">
+      <span class="number-value">€113</span>
+      <span class="number-label">Monthly Running Cost</span>
+    </div>
+    <div class="number-item">
+      <span class="number-value">200+</span>
+      <span class="number-label">Iteration Loops</span>
+    </div>
+    <div class="number-item">
+      <span class="number-value">3×</span>
+      <span class="number-label">Projected ROI</span>
+    </div>
+    <div class="number-item">
+      <span class="number-value">0</span>
+      <span class="number-label">Agency Budget</span>
+    </div>
+    <div class="number-item">
+      <span class="number-value">5mo</span>
+      <span class="number-label">Build Duration</span>
+    </div>
+  </div>
+</div>
+
+<div class="sep"></div>
+
+<!-- ── 01 · SCRUM BOARD ── -->
+<div class="section">
+  <div class="section-num">01 · Process</div>
+  <h2 class="section-title rv">THE <em>BOARD.</em></h2>
+  <p class="section-body rv">
+    Every feature, every page, every integration ran through a proper Scrum backlog. No ad-hoc decisions. No scope creep without consent. Product Owner and developer were the same person — which is either elegant or insane. Probably both.
+  </p>
+  <div class="sprint-grid rv">
+    <div class="sprint-col">
+      <div class="sprint-col-header done">✓ Done</div>
+      <div class="sprint-card done-card"><span class="card-tag">Infrastructure</span>Ghost CMS setup & theme deployment</div>
+      <div class="sprint-card done-card"><span class="card-tag">Brand</span>Copy & positioning (EN/DE/ES)</div>
+      <div class="sprint-card done-card"><span class="card-tag">Tool</span>Audit Tool v8 — PageSpeed, Core Web Vitals</div>
+      <div class="sprint-card done-card"><span class="card-tag">DNS</span>IONOS domain setup & subdomain routing</div>
+      <div class="sprint-card done-card"><span class="card-tag">Deploy</span>Audit Tool live on audit.silentmonkey.io</div>
+      <div class="sprint-card done-card"><span class="card-tag">Integration</span>cal.eu booking integration</div>
+      <div class="sprint-card done-card"><span class="card-tag">Payments</span>Stripe DE account active</div>
+      <div class="sprint-card done-card"><span class="card-tag">Design</span>Style Guide v1 — Colors, Typography, Pillars</div>
+      <div class="sprint-card done-card"><span class="card-tag">Frontend</span>Homepage v21 — Dot-Nav, Two Pillars, Timeline</div>
+      <div class="sprint-card done-card"><span class="card-tag">Deploy</span>Vercel + GitHub — auto-deploy pipeline</div>
+      <div class="sprint-card done-card"><span class="card-tag">PM</span>Proyex.io — portal.silentmonkey.io verified</div>
+      <div class="sprint-card done-card"><span class="card-tag">UX</span>Language switcher EN/DE/ES — Claude API</div>
+      <div class="sprint-card done-card"><span class="card-tag">Strategy</span>Two-pillar model: Consulting + Creation</div>
+    </div>
+    <div class="sprint-col">
+      <div class="sprint-col-header doing">→ In Progress</div>
+      <div class="sprint-card doing-card"><span class="card-tag">Legal</span>Impressum & Datenschutz (pending Ibiza address + NIF)</div>
+      <div class="sprint-card doing-card"><span class="card-tag">Email</span>andreas@silentmonkey.io via Proton Mail</div>
+      <div class="sprint-card doing-card"><span class="card-tag">Content</span>Making-Of · Case Studies · Insights</div>
+      <div class="sprint-card doing-card"><span class="card-tag">Payments</span>Stripe ES — pending Autónomo registration</div>
+      <div class="sprint-card doing-card"><span class="card-tag">Migration</span>silentmonkey.io → own build (Q3 2026)</div>
+    </div>
+    <div class="sprint-col">
+      <div class="sprint-col-header todo">○ Backlog</div>
+      <div class="sprint-card todo-card"><span class="card-tag">Tool</span>PDF Report Feature — Audit Tool</div>
+      <div class="sprint-card todo-card"><span class="card-tag">Tool</span>Carbon API + Security backend</div>
+      <div class="sprint-card todo-card"><span class="card-tag">Content</span>Case Studies — Ibiza Voices · V¡STOR</div>
+      <div class="sprint-card todo-card"><span class="card-tag">Content</span>About / Philosophy — "I build bridges"</div>
+      <div class="sprint-card todo-card"><span class="card-tag">Automation</span>n8n self-hosted setup</div>
+      <div class="sprint-card todo-card"><span class="card-tag">Automation</span>Zapier → Ghost member onboarding</div>
+    </div>
+  </div>
+</div>
+
+<div class="sep"></div>
+
+<!-- ── 02 · SWOT ── -->
+<div class="section">
+  <div class="section-num">02 · Strategy</div>
+  <h2 class="section-title rv">SWOT <em>ANALYSIS.</em></h2>
+  <p class="section-body rv">
+    A honest look at where Silent Monkey Solution stands — strengths to build on, weaknesses to address, opportunities to capture, threats to navigate.
+  </p>
+  <div class="swot-grid rv">
+    <div class="swot-cell">
+      <div class="swot-label">S</div>
+      <div class="swot-title">Strengths</div>
+      <ul class="swot-list">
+        <li>Boutique positioning — selective, not mass-market</li>
+        <li>Scrum methodology — structured, transparent delivery</li>
+        <li>Full-stack digital competence — DNS to AI integration</li>
+        <li>EU-compliant tool stack — DSGVO by design</li>
+        <li>Own audit tool — unique lead generation asset</li>
+        <li>No agency overhead — lean, fast, direct</li>
+      </ul>
+    </div>
+    <div class="swot-cell">
+      <div class="swot-label">W</div>
+      <div class="swot-title">Weaknesses</div>
+      <ul class="swot-list">
+        <li>Solo operation — capacity limits per project</li>
+        <li>DNS migration still pending</li>
+        <li>Legal setup in transition — German market only for now</li>
+        <li>No case studies published yet</li>
+        <li>Squarespace migration still pending</li>
+        <li>Brand recognition still early stage</li>
+      </ul>
+    </div>
+    <div class="swot-cell">
+      <div class="swot-label">O</div>
+      <div class="swot-title">Opportunities</div>
+      <ul class="swot-list">
+        <li>AI consulting market growing rapidly</li>
+        <li>Ghost CMS — strong SEO foundation</li>
+        <li>Audit tool as scalable lead engine</li>
+        <li>Proyex — client transparency as differentiator</li>
+        <li>Automation (n8n) reduces manual overhead</li>
+        <li>Boutique positioning in underserved markets</li>
+      </ul>
+    </div>
+    <div class="swot-cell">
+      <div class="swot-label">T</div>
+      <div class="swot-title">Threats</div>
+      <ul class="swot-list">
+        <li>Agencies with larger budgets & teams</li>
+        <li>Squarespace/Wix self-service trend</li>
+        <li>AI tools reducing perceived need for consultants</li>
+        <li>Slow client decision cycles</li>
+        <li>Platform dependency (Ghost, Vercel, cal.eu)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="sep"></div>
+
+<!-- ── 03 · SCRUM EXPLAINER ── -->
+<div class="section">
+  <div class="section-num">03 · Methodology</div>
+  <h2 class="section-title rv">WHY <em>SCRUM?</em></h2>
+  <p class="section-body rv">
+    Scrum is a framework for delivering complex projects in short, focused cycles called Sprints. We apply it to every client project — and to ourselves. Here's what it means in practice.
+  </p>
+  <div class="scrum-grid rv">
+    <div class="scrum-cell">
+      <div class="scrum-icon">📋</div>
+      <div class="scrum-term">PRODUCT BACKLOG</div>
+      <p class="scrum-def">The complete list of everything that needs to be built. Prioritised, estimated, owned. <strong>Nothing gets built without being in the backlog.</strong> No surprises, no scope creep.</p>
+    </div>
+    <div class="scrum-cell">
+      <div class="scrum-icon">⚡</div>
+      <div class="scrum-term">SPRINT</div>
+      <p class="scrum-def">A fixed time-box — typically 1–2 weeks — in which a defined set of work gets completed. <strong>Each sprint delivers something tangible.</strong> You don't wait for "done" — you see progress continuously.</p>
+    </div>
+    <div class="scrum-cell">
+      <div class="scrum-icon">🔍</div>
+      <div class="scrum-term">REVIEW & RETRO</div>
+      <p class="scrum-def">After each sprint: what was delivered, what worked, what didn't. <strong>Continuous improvement is built into the process.</strong> Not a post-mortem — a living habit.</p>
+    </div>
+    <div class="scrum-cell">
+      <div class="scrum-icon">🎯</div>
+      <div class="scrum-term">SPRINT PLANNING</div>
+      <p class="scrum-def">Before each sprint: we define exactly what gets done, who does it, and what "done" means. <strong>No ambiguity. No open-ended tasks.</strong> Clear scope, clear output.</p>
+    </div>
+    <div class="scrum-cell">
+      <div class="scrum-icon">🔮</div>
+      <div class="scrum-term">TRANSPARENCY</div>
+      <p class="scrum-def">Every task, every decision, every blocker is visible. <strong>Clients see the board.</strong> Not a curated highlight reel — the actual work, in real time, via Proyex.</p>
+    </div>
+    <div class="scrum-cell">
+      <div class="scrum-icon">⚙️</div>
+      <div class="scrum-term">ITERATIVE DELIVERY</div>
+      <p class="scrum-def">We don't build everything and then show you. <strong>We build in layers.</strong> Each iteration is functional. Each version is better than the last. v21 is proof.</p>
+    </div>
+  </div>
+</div>
+
+<div class="sep"></div>
+
+<!-- ── 04 · TIMELINE ── -->
+<div class="section">
+  <div class="section-num">04 · History</div>
+  <h2 class="section-title rv">HOW IT <em>HAPPENED.</em></h2>
+  <div class="timeline rv">
+    <div class="timeline-item">
+      <div class="timeline-date">November 2025</div>
+      <div class="timeline-title">Concept & First Build</div>
+      <div class="timeline-body">Silentmonkey.io v1 launched on Squarespace. Animated timeline, countdown timers, British English copy. Positioned toward artists and coaches. Wrong direction — pivot required.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">January 2026</div>
+      <div class="timeline-title">Repositioning</div>
+      <div class="timeline-body">Three-pillar model defined: Consulting · Solutions · Creation. "Eye of the Storm" philosophy developed. Legal contract templates, welcome flows. The brand voice found its register.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">February 2026</div>
+      <div class="timeline-title">Ghost Migration Decision</div>
+      <div class="timeline-body">Squarespace replaced by Ghost CMS. Better SEO, built-in newsletter, open architecture. Custom theme development begins. Tool stack locked: Ghost + Proyex.io + Proton Mail.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">March 2026</div>
+      <div class="timeline-title">Audit Tool Development</div>
+      <div class="timeline-body">Website audit tool built from scratch — 8 iterations. PageSpeed Insights, Core Web Vitals timeline, hover info panels, trilingual UI. Deployed as lead generation funnel on audit.silentmonkey.io.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">April 2026 · Week 1</div>
+      <div class="timeline-title">Style Guide & Strategy</div>
+      <div class="timeline-body">Style Guide v1 completed — four pillars, color system, typography. Two-pillar consulting strategy defined: Audit (leads) → cal.eu → Proyex (delivery). Domain architecture clarified.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">April 2026 · Week 2</div>
+      <div class="timeline-title">Homepage v17 — First Deploy</div>
+      <div class="timeline-body">17 iterations in one session. Dot-navigation, onboarding timeline with Scrum badges, two-pillar intake, three contact blocks. First version reviewable on iPad — fast, clean, no agency.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">April 2026 · Week 3</div>
+      <div class="timeline-title">Vercel + GitHub · v21 · Two Pillars</div>
+      <div class="timeline-body">Migrated from Netlify to Vercel with GitHub auto-deploy pipeline. Homepage reached v21 — fully English, trilingual language switcher functional. Strategic decision: two pillars (Consulting + Creation), Solution dropped. audit.silentmonkey.io now serves both Consulting landing page and Audit Tool.</div>
+    </div>
+  </div>
+</div>
+
+<div class="sep"></div>
+
+<!-- ── 05 · TOOL STACK ── -->
+<div class="section">
+  <div class="section-num">05 · Infrastructure</div>
+  <h2 class="section-title rv">THE <em>STACK.</em></h2>
+  <p class="section-body rv">Every tool chosen for a reason. EU-compliant where possible. Open-source preferred. No vendor lock-in without justification.</p>
+  <div class="tools-grid rv">
+    <div class="tool-item">
+      <div class="tool-category">CMS</div>
+      <div class="tool-name"><a href="https://ghost.org" target="_blank" rel="noopener">Ghost</a></div>
+      <div class="tool-desc">Open-source publishing platform. Built-in newsletter, membership, SEO. €29/mo.</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-category">Hosting · Domain</div>
+      <div class="tool-name"><a href="https://www.ionos.de" target="_blank" rel="noopener">IONOS</a></div>
+      <div class="tool-desc">DNS management. EU-based. Full control over A-records, CNAME, TXT. €7/mo.</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-category">Deploy · CDN</div>
+      <div class="tool-name"><a href="https://vercel.com" target="_blank" rel="noopener">Vercel</a></div>
+      <div class="tool-desc">Static & serverless hosting. Auto-deploy from GitHub on every commit. Free Hobby tier. Global CDN. Instant HTTPS.</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-category">Email</div>
+      <div class="tool-name"><a href="https://proton.me/mail" target="_blank" rel="noopener">Proton Mail</a></div>
+      <div class="tool-desc">Swiss-based, end-to-end encrypted. DSGVO-compliant by design. €9/mo.</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-category">Project Management</div>
+      <div class="tool-name"><a href="https://proyex.io" target="_blank" rel="noopener">Proyex.io</a></div>
+      <div class="tool-desc">Client-facing project management. Transparent progress tracking. €15/mo.</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-category">Passwords</div>
+      <div class="tool-name"><a href="https://www.dashlane.com" target="_blank" rel="noopener">Dashlane</a></div>
+      <div class="tool-desc">Centralised credential management. Every API key, every account, secured. €8/mo.</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-category">API · Analytics</div>
+      <div class="tool-name"><a href="https://pagespeed.web.dev" target="_blank" rel="noopener">Google PageSpeed</a></div>
+      <div class="tool-desc">Core Web Vitals data source for the Audit Tool. Lighthouse under the hood. Free.</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-category">AI · Build Partner</div>
+      <div class="tool-name"><a href="https://www.anthropic.com/claude" target="_blank" rel="noopener">Claude API</a></div>
+      <div class="tool-desc">Powers the trilingual UI switcher and entire frontend build process. €20/mo.</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-category">Booking</div>
+      <div class="tool-name"><a href="https://cal.eu" target="_blank" rel="noopener">cal.eu</a></div>
+      <div class="tool-desc">EU-based scheduling. DSGVO-compliant. Embedded in Audit Tool and Homepage CTAs.</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-category">Payments</div>
+      <div class="tool-name"><a href="https://stripe.com" target="_blank" rel="noopener">Stripe</a></div>
+      <div class="tool-desc">Payment infrastructure. DE account active. ES account pending Autónomo registration.</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-category">Legal</div>
+      <div class="tool-name"><a href="https://www.e-recht24.de" target="_blank" rel="noopener">e-recht24.de</a></div>
+      <div class="tool-desc">DSGVO-compliant legal texts. Cookie consent, privacy policy, terms of service. €25/mo.</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-category">Browser</div>
+      <div class="tool-name"><a href="https://www.mozilla.org/firefox" target="_blank" rel="noopener">Firefox</a></div>
+      <div class="tool-desc">Primary development browser. Privacy-first, DevTools, EU-aligned. Open source.</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-category">Automation · In Progress</div>
+      <div class="tool-name"><a href="https://n8n.io" target="_blank" rel="noopener">n8n</a></div>
+      <div class="tool-desc">Open-source automation. Self-hosted, EU-compliant, no per-task costs. Full control.</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-category">Automation · Backlog</div>
+      <div class="tool-name"><a href="https://zapier.com" target="_blank" rel="noopener">Zapier</a></div>
+      <div class="tool-desc">Ghost-native automation. Member onboarding, email triggers, CRM sync.</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-category">Research · AI</div>
+      <div class="tool-name"><a href="https://www.perplexity.ai" target="_blank" rel="noopener">Perplexity</a></div>
+      <div class="tool-desc">AI-powered research assistant. Market research & competitive analysis.</div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-category">Version Control</div>
+      <div class="tool-name"><a href="https://github.com" target="_blank" rel="noopener">GitHub</a></div>
+      <div class="tool-desc">Code versioning and auto-deploy pipeline. Connected to Vercel — every push goes live automatically. Full version history.</div>
+    </div>
+  </div>
+</div>
+
+<div class="sep"></div>
+
+<!-- ── QUOTE ── -->
+<div class="section" style="border-bottom:none;">
+  <div class="quote-block rv">
+    <p class="quote-text">"We built this the way we build everything — one problem at a time, until the answer appears. The project took longer than planned. It always does. That's not failure. That's how real things get made."</p>
+    <span class="quote-author">Andreas · Founder, Silent Monkey Solution</span>
+  </div>
+
+  <div class="cta-block rv">
+    <div class="cta-left">
+      <div class="cta-title">THIS COULD BE<br><em>YOUR PROJECT.</em></div>
+      <p class="cta-sub">You've seen how we work. You know what we build. If you have a project that needs clarity, structure, and someone who hasn't said no yet — let's talk.</p>
+    </div>
+    <div class="cta-right">
+      <a href="https://audit.silentmonkey.io#zone-start" class="btn-fill">Start a Project →</a>
+      <a href="https://cal.eu/silent-monkey/silent-monkey-audit" target="_blank" class="btn-ghost">Book a Call · cal.eu →</a>
+    </div>
+  </div>
+</div>
+
+</div><!-- end expandContent -->
+
+<!-- ── LIVING DOC ── -->
+<div class="living-doc-bar">
+  <span class="living-doc-label">⟳ Living Document</span>
+  <span class="living-doc-text">We ship, we learn, we update. Features are added, tools evolve, numbers change.</span>
+  <span class="living-doc-updated">Last updated: <strong id="lastUpdated"></strong></span>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-logo">SILENT<b>_</b>MONKEY <b>·</b> IO</div>
+  <div class="footer-copy">
+    © 2026 Silent Monkey Solution · Berlin & Beyond<br>
+    <a href="https://www.silentmonkey.io/impresssum" class="f-link">Imprint</a>
+    <span style="color:var(--dim);padding:0 .4rem;">·</span>
+    <a href="https://www.silentmonkey.io/dsgvo" class="f-link">Privacy</a>
+    <span style="color:var(--dim);padding:0 .4rem;">·</span>
+    <a href="https://www.silentmonkey.io/agbde" class="f-link">GTC</a>
+  </div>
+  <div style="font-family:var(--font-m);font-size:.6rem;color:var(--dim);text-align:right;line-height:1.9;">
+    Boutique Digital Consulting<br>EU Compliant · DSGVO
+  </div>
+</footer>
+
+<script>
+  // ── REVEAL ──
+  const io = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting) x.target.classList.add('in'); }), {threshold:.08});
+  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+  // ── BACK PILL ──
+  const pill = document.getElementById('backPill');
+  window.addEventListener('scroll', () => {
+    pill.classList.toggle('visible', scrollY > 300);
+  }, {passive: true});
+
+  // ── EXPAND / COLLAPSE ──
+  function toggleExpand() {
+    const content = document.getElementById('expandContent');
+    const btn = document.getElementById('expandBtn');
+    const isOpen = content.classList.contains('open');
+    content.classList.toggle('open');
+    btn.classList.toggle('open');
+    btn.textContent = isOpen ? 'Read the full Making-Of ↓' : 'Close ↑';
+    if (!isOpen) {
+      setTimeout(() => {
+        content.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+      // Trigger reveal animations inside
+      content.querySelectorAll('.rv').forEach(el => io.observe(el));
+    }
+  }
+
+  // ── LAST UPDATED ──
+  (function() {
+    const el = document.getElementById('lastUpdated');
+    if (!el) return;
+    const d = new Date();
+    const pad = n => String(n).padStart(2, '0');
+    el.textContent = d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
+  })();
+</script>
+
+</body>
+</html>
