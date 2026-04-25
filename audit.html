@@ -8,7 +8,7 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg:     #0e0c0a;
+      --bg:     #17140f;
       --fg:     #ede8df;
       --muted:  #8a7b6e;
       --dim:    #4a3f35;
@@ -24,6 +24,13 @@
       --pad:    clamp(4rem, 8vw, 7rem);
       --pad-l:  clamp(4.5rem, 9vw, 8rem);
       --max-w:  1280px;
+    }
+
+    /* ── SMOOTH THEME TRANSITION ── */
+    body, .site-header, .sc-card, .cwv-card, .finding,
+    .coming-soon-block, .cta-block, .url-wrap, .strategy,
+    .lang-switch, .info-panel, footer {
+      transition: background .4s, color .4s, border-color .4s;
     }
 
     /* ── LIGHT MODE ── */
@@ -944,8 +951,8 @@ ${text}`
     document.getElementById('urlIn').addEventListener('keydown', e => { if (e.key === 'Enter') runAudit(); });
 
     // ── THEME TOGGLE ──
-    const DARK_A  = { '--bg':'#0e0c0a','--fg':'#ede8df','--muted':'#8a7b6e','--dim':'#4a3f35','--panel':'#131110','--info':'#1a1714','--border':'rgba(237,232,223,.06)' };
-    const LIGHT_A = { '--bg':'#e8e2d9','--fg':'#1a1612','--muted':'#5a5048','--dim':'#7a6e64','--panel':'#ddd7cc','--info':'#d5cec4','--border':'rgba(26,22,18,.09)' };
+    const DARK_A  = { '--bg':'#17140f','--fg':'#ede8df','--muted':'#8a7b6e','--dim':'#4a3f35','--accent':'#d4a84b','--panel':'#131110','--info':'#1a1714','--border':'rgba(237,232,223,.06)' };
+    const LIGHT_A = { '--bg':'#e8e2d9','--fg':'#1a1612','--muted':'#5a5048','--dim':'#7a6e64','--accent':'#a87820','--panel':'#ddd7cc','--info':'#d5cec4','--border':'rgba(26,22,18,.09)' };
     let isLight = false;
     function toggleTheme() {
       isLight = !isLight;

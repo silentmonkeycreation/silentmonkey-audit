@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0e0c0a;
+    --bg: #17140f;
     --gold: #d4a84b;
     --gold-dim: #8a7048;
     --white: #ede8df;
@@ -22,6 +22,13 @@
     --pad: clamp(4rem, 8vw, 7rem);
     --pad-l: clamp(4.5rem, 9vw, 8rem);
     --max-w: 1280px;
+  }
+
+  /* ── SMOOTH THEME TRANSITION ── */
+  body, nav, .number-item, .sprint-col, .swot-cell, .scrum-cell,
+  .tool-item, .cta-left, .cta-right, .quote-block, .section,
+  .living-doc-bar, footer, .sprint-card, .faq-q {
+    transition: background .4s, color .4s, border-color .4s;
   }
 
   /* ── LIGHT MODE ── */
@@ -862,8 +869,8 @@
 
 <script>
   // ── THEME TOGGLE ──
-  const DARK_M = { '--bg':'#0e0c0a','--white':'#ede8df','--muted':'#8a7b6e','--dim':'#4a3f35','--grey-light':'#1e1a16' };
-  const LIGHT_M = { '--bg':'#e8e2d9','--white':'#1a1612','--muted':'#5a5048','--dim':'#7a6e64','--grey-light':'#d0c9bf' };
+  const DARK_M = { '--bg':'#17140f','--white':'#ede8df','--muted':'#8a7b6e','--dim':'#4a3f35','--grey-light':'#1e1a16' };
+  const LIGHT_M = { '--bg':'#e8e2d9','--white':'#1a1612','--muted':'#5a5048','--dim':'#7a6e64','--gold':'#a87820','--grey-light':'#d0c9bf' };
   let isLight = false;
   function toggleTheme() {
     isLight = !isLight;

@@ -18,9 +18,9 @@
       --pad:    clamp(4rem, 8vw, 7rem);
       --pad-l:  clamp(4.5rem, 9vw, 8rem);
       --max-w:  1280px; /* left side accounts for dot nav */
-      --zone-1: #0e0c0a;
-      --zone-2: #080e14;
-      --zone-3: #08100e;
+      --zone-1: #17140f;
+      --zone-2: #0f1318;
+      --zone-3: #0c1410;
     }
 
     #zone-hero    { padding-left: var(--pad-l); }
@@ -71,7 +71,13 @@
       background-size: 180px;
     }
 
-    /* ── LIGHT MODE — structural overrides (colours via JS :root injection) ── */
+    /* ── SMOOTH THEME TRANSITION ── */
+    body, .step, .cta-bridge, #zone-making, .site-header,
+    .start-grid, .contact-row, .contact-btn, .start-info-block,
+    .faq-grid-2col, .faq-q, .faq-answer-wrap, footer, .tl-dot,
+    .scrum-badge, .lbtn, .header-cta, .theme-btn {
+      transition: background .4s, color .4s, border-color .4s;
+    }
     body.light .site-header.on {
       background: rgba(232,226,217,.94);
       border-color: rgba(26,22,18,.1);
@@ -101,6 +107,8 @@
       -webkit-text-stroke-color: rgba(212,168,75,.2);
     }
     body.light .hero-ghost { -webkit-text-stroke-color: rgba(212,168,75,.1); }
+    body.light .hero-label { color: #a87820; font-weight: 500; }
+    body.light .boutique-label { color: #7a6558; opacity: 1; }
     body.light .start-grid { background: rgba(26,22,18,.1); border-color: rgba(26,22,18,.1); }
     body.light .contact-row { background: rgba(26,22,18,.1); border-color: rgba(26,22,18,.1); }
     body.light .contact-btn { background: var(--zone-1); }
@@ -123,7 +131,7 @@
     body.light .onboarding-h em,
     body.light .faq-h em,
     body.light .intake-h em,
-    body.light .cta-hl em { color: rgba(90,80,72,.45); }
+    body.light .cta-hl em { color: rgba(60,52,44,.62); }
 
     /* ── THEME TOGGLE BUTTON ── */
     .theme-btn {
@@ -1246,16 +1254,18 @@
     // ── THEME TOGGLE — injects vars directly on :root for reliable repaint ──
     const DARK = {
       '--fg':     '#ede8df',
+      '--accent': '#d4a84b',
       '--muted':  '#8a7b6e',
       '--dim':    '#4a3f35',
-      '--zone-1': '#0e0c0a',
-      '--zone-2': '#080e14',
-      '--zone-3': '#08100e',
+      '--zone-1': '#17140f',
+      '--zone-2': '#0f1318',
+      '--zone-3': '#0c1410',
     };
     const LIGHT = {
       '--fg':     '#1a1612',
       '--muted':  '#5a5048',
-      '--dim':    '#7a6e64',   /* darker than before — readable on pale bg */
+      '--dim':    '#7a6e64',
+      '--accent': '#a87820',
       '--zone-1': '#e8e2d9',
       '--zone-2': '#ddd7cc',
       '--zone-3': '#d5cec4',
