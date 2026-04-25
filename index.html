@@ -71,57 +71,59 @@
       background-size: 180px;
     }
 
-    /* ── LIGHT MODE ── */
-    body.light {
-      --fg:     #1a1612;
-      --muted:  #6a5e52;
-      --dim:    #b0a090;
-      --zone-1: #e8e2d9;
-      --zone-2: #ddd7cc;
-      --zone-3: #d5cec4;
-    }
-    /* background-image on body uses var(--zone-*) so it updates automatically */
-    body.light .site-header { background: transparent; }
+    /* ── LIGHT MODE — structural overrides (colours via JS :root injection) ── */
     body.light .site-header.on {
       background: rgba(232,226,217,.94);
-      border-color: rgba(26,22,18,.08);
+      border-color: rgba(26,22,18,.1);
     }
     body.light .sep {
-      background: linear-gradient(90deg, transparent, rgba(212,168,75,.25), transparent);
+      background: linear-gradient(90deg, transparent, rgba(212,168,75,.3), transparent);
     }
     body.light .step { border-top-color: rgba(26,22,18,.1); }
-    body.light .step:hover { background: rgba(212,168,75,.06); }
+    body.light .step:hover { background: rgba(212,168,75,.07); }
+    body.light .step-ghost {
+      background: linear-gradient(180deg, rgba(26,22,18,.09) 0%, rgba(232,226,217,0) 40%, rgba(200,195,185,.04) 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-stroke-color: rgba(212,168,75,.22);
+    }
+    body.light .step:hover .step-ghost { -webkit-text-stroke-color: rgba(212,168,75,.45); }
     body.light .cta-bridge { border-top-color: rgba(26,22,18,.1); }
     body.light .cta-bridge-ghost {
-      background: linear-gradient(180deg, rgba(26,22,18,.04) 0%, rgba(232,226,217,0) 60%);
+      background: linear-gradient(180deg, rgba(26,22,18,.06) 0%, rgba(232,226,217,0) 60%);
       -webkit-background-clip: text; background-clip: text;
+      -webkit-text-stroke-color: rgba(212,168,75,.18);
     }
     body.light #zone-making { border-top-color: rgba(26,22,18,.1); }
-    body.light #zone-making:hover { background: rgba(212,168,75,.05); }
+    body.light #zone-making:hover { background: rgba(212,168,75,.06); }
+    body.light .making-ghost {
+      background: linear-gradient(180deg, rgba(26,22,18,.08) 0%, rgba(232,226,217,0) 50%, rgba(200,195,185,.04) 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-stroke-color: rgba(212,168,75,.2);
+    }
+    body.light .hero-ghost { -webkit-text-stroke-color: rgba(212,168,75,.1); }
     body.light .start-grid { background: rgba(26,22,18,.1); border-color: rgba(26,22,18,.1); }
     body.light .contact-row { background: rgba(26,22,18,.1); border-color: rgba(26,22,18,.1); }
     body.light .contact-btn { background: var(--zone-1); }
-    body.light .contact-btn:hover { background: rgba(212,168,75,.12); }
+    body.light .contact-btn:hover { background: rgba(212,168,75,.14); }
     body.light .start-info-block { background: var(--zone-2); }
     body.light .faq-grid-2col { background: rgba(26,22,18,.1); border-color: rgba(26,22,18,.1); }
     body.light .faq-q { background: var(--zone-1); border-bottom-color: rgba(26,22,18,.1); }
-    body.light .faq-answer-wrap { border-color: rgba(26,22,18,.1); background: rgba(212,168,75,.04); }
+    body.light .faq-q:hover { background: rgba(212,168,75,.07); }
+    body.light .faq-q.active { background: rgba(212,168,75,.1); }
+    body.light .faq-answer-wrap { border-color: rgba(26,22,18,.1); background: rgba(212,168,75,.05); }
     body.light footer { border-top-color: rgba(26,22,18,.1); }
-    body.light .timeline::before { background: rgba(212,168,75,.3); }
+    body.light .timeline::before { background: rgba(212,168,75,.35); }
     body.light .tl-dot { background: var(--zone-1); }
-    body.light .step-ghost {
-      background: linear-gradient(180deg, rgba(26,22,18,.06) 0%, rgba(232,226,217,0) 40%, rgba(200,195,185,.04) 100%);
-      -webkit-background-clip: text; background-clip: text;
-    }
-    body.light .making-ghost {
-      background: linear-gradient(180deg, rgba(26,22,18,.05) 0%, rgba(232,226,217,0) 50%, rgba(200,195,185,.04) 100%);
-      -webkit-background-clip: text; background-clip: text;
-    }
-    body.light .hero-ghost { -webkit-text-stroke-color: rgba(212,168,75,.07); }
-    body.light .scrum-badge { background: rgba(212,168,75,.07); border-color: rgba(212,168,75,.3); }
-    body.light .cf-field input, body.light .cf-field textarea { border-bottom-color: var(--dim); color: var(--fg); }
-    body.light .faq-q:hover { background: rgba(212,168,75,.05); }
-    body.light .faq-q.active { background: rgba(212,168,75,.08); }
+    body.light .scrum-badge { background: rgba(212,168,75,.08); border-color: rgba(212,168,75,.35); }
+    body.light .dot-nav { opacity: .7; }
+    body.light .dot-rail { background: rgba(212,168,75,.2); }
+    body.light .dot { border-color: rgba(212,168,75,.4); }
+    /* em elements (italic/muted headlines) — lighter in light mode, not darker */
+    body.light .process-head h2 em,
+    body.light .onboarding-h em,
+    body.light .faq-h em,
+    body.light .intake-h em,
+    body.light .cta-hl em { color: rgba(90,80,72,.45); }
 
     /* ── THEME TOGGLE BUTTON ── */
     .theme-btn {
@@ -1241,15 +1243,33 @@
   </footer>
 
   <script>
-    // ── THEME TOGGLE ──
+    // ── THEME TOGGLE — injects vars directly on :root for reliable repaint ──
+    const DARK = {
+      '--fg':     '#ede8df',
+      '--muted':  '#8a7b6e',
+      '--dim':    '#4a3f35',
+      '--zone-1': '#0e0c0a',
+      '--zone-2': '#080e14',
+      '--zone-3': '#08100e',
+    };
+    const LIGHT = {
+      '--fg':     '#1a1612',
+      '--muted':  '#5a5048',
+      '--dim':    '#7a6e64',   /* darker than before — readable on pale bg */
+      '--zone-1': '#e8e2d9',
+      '--zone-2': '#ddd7cc',
+      '--zone-3': '#d5cec4',
+    };
+    let isLight = false;
+    function applyTheme(vars) {
+      const root = document.documentElement.style;
+      Object.entries(vars).forEach(([k, v]) => root.setProperty(k, v));
+    }
     function toggleTheme() {
-      const isLight = document.body.classList.toggle('light');
-      const btn = document.getElementById('themeToggle');
-      btn.textContent = isLight ? '◐ DARK' : '◐ LIGHT';
-      // Force background-image repaint — CSS vars in gradients need this on some browsers
-      const bi = getComputedStyle(document.body).backgroundImage;
-      document.body.style.backgroundImage = 'none';
-      requestAnimationFrame(() => { document.body.style.backgroundImage = ''; });
+      isLight = !isLight;
+      applyTheme(isLight ? LIGHT : DARK);
+      document.body.classList.toggle('light', isLight);
+      document.getElementById('themeToggle').textContent = isLight ? '◐ DARK' : '◐ LIGHT';
     }
 
     // ── DIALOG-EFFEKT: CTA BRIDGE — reveals once on first hover ──
