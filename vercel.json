@@ -1,1 +1,13 @@
-
+{
+  "rewrites": [
+    {
+      "has": [{ "type": "host", "value": "audit.silentmonkey.io" }],
+      "source": "/(.*)",
+      "destination": "/audit/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/main/$1"
+    }
+  ]
+}
