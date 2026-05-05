@@ -1,1 +1,207 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guardián de Eivissa · Konzept v0.7 · Silent Monkey Solution</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap');
+:root{--ink:#1a1814;--ink-2:#231f1a;--ink-3:#0f0d0b;--warm:#f5f2ec;--muted:#8a7d6b;--border:#3a342c;--glow:#6fcf7f;--lime:#4a9e5c;--pale:#b8e8c0;--serif:'Cormorant Garamond',Georgia,serif;--mono:'Space Mono','Courier New',monospace;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--mono);background:var(--ink);color:var(--warm);font-size:12px;line-height:1.6;padding:3rem 2rem;}
+.wrap{max-width:860px;margin:0 auto;}
+.topbar{display:flex;justify-content:space-between;align-items:center;border-bottom:0.5px solid var(--border);padding-bottom:1.5rem;margin-bottom:3rem;}
+.logo{font-size:10px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;}
+.logo span{color:var(--glow);}
+.pill{font-size:9px;letter-spacing:.12em;background:var(--ink-2);border:0.5px solid var(--border);color:var(--lime);padding:4px 12px;text-transform:uppercase;}
+.hero{margin-bottom:3.5rem;}
+.hero-lbl{font-size:9px;letter-spacing:.22em;color:var(--lime);text-transform:uppercase;margin-bottom:1rem;}
+.hero-h{font-family:var(--serif);font-weight:300;font-size:3.5rem;color:var(--warm);line-height:1.02;margin-bottom:1.25rem;}
+.hero-h em{font-style:italic;color:var(--pale);}
+.hero-p{font-size:12px;line-height:1.9;color:var(--muted);max-width:520px;}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0.5px;background:var(--border);border:0.5px solid var(--border);margin-bottom:3.5rem;}
+.stat{background:var(--ink-2);padding:1.25rem 1rem;}
+.stat-n{font-family:var(--serif);font-size:2rem;font-weight:300;color:var(--pale);line-height:1;margin-bottom:4px;}
+.stat-n span{font-family:var(--mono);font-size:.8rem;color:var(--glow);}
+.stat-l{font-size:8px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;}
+.sec{margin-bottom:3rem;}
+.sec-hd{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;}
+.sec-n{font-size:9px;color:var(--border);letter-spacing:.1em;min-width:22px;}
+.sec-t{font-size:9px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;}
+.sec-line{flex:1;height:0.5px;background:var(--border);}
+.roi-box{background:var(--ink-2);border:0.5px solid var(--lime);padding:1.75rem;margin-bottom:1rem;}
+.roi-top{display:flex;justify-content:space-between;align-items:flex-start;gap:1.5rem;margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:0.5px solid var(--border);}
+.roi-title{font-family:var(--serif);font-size:1.7rem;font-weight:300;color:var(--warm);}
+.roi-title em{font-style:italic;color:var(--pale);}
+.roi-desc{font-size:10px;line-height:1.9;color:var(--muted);max-width:300px;}
+.roi-cases{display:grid;grid-template-columns:repeat(3,1fr);gap:0.5px;background:var(--border);margin-bottom:1.25rem;}
+.roi-case{background:var(--ink-3);padding:1rem;}
+.roi-case-n{font-family:var(--serif);font-size:1.4rem;font-weight:300;color:var(--pale);line-height:1;margin-bottom:4px;}
+.roi-case-l{font-size:8px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;margin-bottom:.2rem;}
+.roi-case-src{font-size:8px;color:var(--lime);}
+.roi-case-ref{font-size:8px;color:var(--border);font-style:italic;}
+.roi-calc{padding:1.25rem;background:var(--ink-3);}
+.roi-calc-t{font-size:8px;letter-spacing:.2em;color:var(--lime);text-transform:uppercase;margin-bottom:1rem;}
+.roi-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:0.5px solid var(--border);}
+.roi-row:last-child{border-bottom:none;padding-top:10px;}
+.roi-rl{font-size:10px;color:var(--muted);}
+.roi-rv{font-size:11px;font-weight:700;color:var(--warm);}
+.roi-row.total .roi-rl{color:var(--pale);}
+.roi-row.total .roi-rv{color:var(--glow);font-family:var(--serif);font-size:1.2rem;font-weight:300;}
+.roi-note{font-size:8px;line-height:1.8;color:var(--border);font-style:italic;margin-top:1rem;}
+.sources{background:var(--ink-3);border:0.5px solid var(--border);padding:1.25rem;margin-bottom:1.5rem;}
+.sources-t{font-size:8px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:0.5px solid var(--border);}
+.src{display:grid;grid-template-columns:22px 1fr;gap:.5rem;padding:.5rem 0;border-bottom:0.5px solid var(--border);}
+.src:last-child{border-bottom:none;}
+.src-n{font-size:9px;color:var(--lime);font-weight:700;}
+.src-amt{font-family:var(--serif);font-size:.9rem;font-weight:300;color:var(--pale);margin-bottom:2px;}
+.src-desc{font-size:9px;color:var(--warm);margin-bottom:2px;}
+.src-meta{font-size:8px;color:var(--muted);}
+.src-url{font-size:8px;color:var(--lime);word-break:break-all;}
+.src-law{font-size:8px;color:var(--border);font-style:italic;margin-top:2px;}
+.expand-note{background:var(--ink-2);border:0.5px dashed var(--border);padding:1rem;margin-bottom:3rem;font-size:10px;line-height:1.8;color:var(--muted);}
+.expand-note strong{color:var(--pale);}
+.tech-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;}
+.tc{background:var(--ink-2);border:0.5px solid var(--border);padding:1.1rem;}
+.tc-tag{font-size:8px;letter-spacing:.12em;color:var(--lime);text-transform:uppercase;margin-bottom:.4rem;}
+.tc-n{font-family:var(--serif);font-size:1rem;font-weight:400;color:var(--warm);margin-bottom:.4rem;}
+.tc-d{font-size:10px;line-height:1.7;color:var(--muted);}
+.tl{display:flex;flex-direction:column;}
+.tl-item{display:grid;grid-template-columns:75px 1px 1fr;gap:0 1.25rem;padding-bottom:1.5rem;}
+.tl-w{font-size:9px;color:var(--muted);text-align:right;letter-spacing:.08em;padding-top:2px;}
+.tl-sp{display:flex;flex-direction:column;align-items:center;}
+.tl-dot{width:7px;height:7px;background:var(--lime);flex-shrink:0;margin-top:3px;}
+.tl-ln{flex:1;width:0.5px;background:var(--border);margin-top:4px;}
+.tl-ph{font-size:8px;letter-spacing:.15em;color:var(--lime);text-transform:uppercase;margin-bottom:3px;}
+.tl-tx{font-size:10px;line-height:1.8;color:var(--muted);}
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;}
+.tm{background:var(--ink-2);border:0.5px solid var(--border);padding:1rem;}
+.tm-role{font-size:8px;letter-spacing:.15em;color:var(--lime);text-transform:uppercase;margin-bottom:.4rem;}
+.tm-name{font-family:var(--serif);font-size:1rem;font-weight:400;color:var(--warm);margin-bottom:.25rem;}
+.tm-detail{font-size:9px;color:var(--muted);line-height:1.6;}
+.tm-pending{font-size:8px;color:var(--border);font-style:italic;margin-top:.3rem;}
+.tm.ph{border-style:dashed;opacity:.65;}
+.tm.ph .tm-name{color:var(--muted);}
+.legal{border:0.5px solid var(--border);padding:1.25rem;background:var(--ink-2);margin-bottom:3rem;}
+.legal p{font-size:9px;line-height:1.9;color:var(--muted);}
+.legal strong{color:var(--pale);}
+.cta{border-top:0.5px solid var(--border);padding-top:2.5rem;display:flex;justify-content:space-between;align-items:flex-end;}
+.cta-h{font-family:var(--serif);font-weight:300;font-size:2.2rem;color:var(--warm);line-height:1.15;}
+.cta-h em{color:var(--pale);font-style:italic;}
+.cta-meta{font-size:9px;color:var(--muted);line-height:2;text-align:right;}
+.cta-meta strong{color:var(--warm);display:block;}
+.conf-stamp{text-align:center;margin-top:3rem;padding-top:1.5rem;border-top:0.5px solid var(--border);font-size:9px;letter-spacing:.2em;color:var(--border);text-transform:uppercase;}
+</style>
+</head>
+<body>
+<div class="wrap">
 
+<div class="topbar">
+  <div class="logo">Silent Monkey · <span>Guardián de Eivissa</span></div>
+  <div class="pill">Konzept v0.7 · Mai 2026 · Vertraulich</div>
+</div>
+
+<div class="hero">
+  <p class="hero-lbl">Projektkonzept · Consell Insular d'Eivissa</p>
+  <h1 class="hero-h">KI-Augen<br>über <em>Eivissa.</em></h1>
+  <p class="hero-p">Ein KI-gestütztes System zur flächendeckenden Erfassung, Überwachung und Dokumentation des Baumbestands — ausgerichtet auf die Erkennung illegaler Fällung, illegaler Bautätigkeit und die kontinuierliche Dokumentation des Naturzustands im Zeitverlauf.</p>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="stat-n">572<span>km²</span></div><div class="stat-l">Inselfläche Eivissa</div></div>
+  <div class="stat"><div class="stat-n">15.<span>Jun</span></div><div class="stat-l">Projektstart</div></div>
+  <div class="stat"><div class="stat-n">24<span>/7</span></div><div class="stat-l">Automatische Überwachung</div></div>
+  <div class="stat"><div class="stat-n">x70<span>+</span></div><div class="stat-l">ROI ab 1. Verstoß</div></div>
+</div>
+
+<!-- ROI -->
+<div class="sec">
+  <div class="sec-hd"><span class="sec-n">01</span><span class="sec-t">ROI · Verifizierte Bußgeldbeispiele Eivissa</span><div class="sec-line"></div></div>
+  <div class="roi-box">
+    <div class="roi-top">
+      <div class="roi-title">Ein Fall.<br><em>Budget refinanziert.</em></div>
+      <div class="roi-desc">Reale Bußgelder nach Ley 12/2017 LUIB — ausschließlich Fälle aus dem direkten Anwendungsbereich dieses Systems: illegale Bauten und nicht genehmigte Eingriffe in Schutzgebiete.</div>
+    </div>
+    <div class="roi-cases">
+      <div class="roi-case"><div class="roi-case-n">€1,479,630</div><div class="roi-case-l">5 illegale Bauten, ANEI Sant Joan</div><div class="roi-case-src">Consell Insular, Feb. 2026</div><div class="roi-case-ref">→ [1][2][3]</div></div>
+      <div class="roi-case"><div class="roi-case-n">€312,000</div><div class="roi-case-l">Baumaßnahmen ohne Lizenz</div><div class="roi-case-src">Ajuntament Eivissa, Jan. 2024</div><div class="roi-case-ref">→ [4]</div></div>
+      <div class="roi-case"><div class="roi-case-n">€674,000</div><div class="roi-case-l">Abriss illegale Villa + Anbau ANEI</div><div class="roi-case-src">Consell Insular, 2023</div><div class="roi-case-ref">→ [4]</div></div>
+    </div>
+    <div class="roi-calc">
+      <div class="roi-calc-t">Budget vs. ROI · Kalkulation</div>
+      <div class="roi-row"><span class="roi-rl">MVP-Investition (vollständig)</span><span class="roi-rv">€13.500–21.000</span></div>
+      <div class="roi-row"><span class="roi-rl">Jahresvertrag inkl. Wartung</span><span class="roi-rv">€60.000–120.000</span></div>
+      <div class="roi-row"><span class="roi-rl">Ø Bußgeld mittlerer Verstoß (LUIB Art. 167)</span><span class="roi-rv">~€300.000–500.000</span></div>
+      <div class="roi-row"><span class="roi-rl">Ø Bußgeld schwerer Verstoß ANEI (250% Bauwert)</span><span class="roi-rv">~€500.000–1.500.000</span></div>
+      <div class="roi-row total"><span class="roi-rl">ROI ab erstem aufgedeckten Fall</span><span class="roi-rv">700–7.000%</span></div>
+    </div>
+    <p class="roi-note">* Nur Fälle aus dem direkten Anwendungsbereich: illegale Bausubstanz + Eingriffe in Schutzgebiete. Quellen: Consell Insular d'Eivissa, Ajuntament d'Eivissa, Periódico de Ibiza, La Voz de Ibiza, Noudiari.es, OKDiario Baleares (2023–2026).</p>
+  </div>
+
+  <div class="sources">
+    <div class="sources-t">Quellenverzeichnis · Alle Quellen verifiziert am 3. Mai 2026</div>
+    <div class="src"><div class="src-n">[1]</div><div><div class="src-amt">€1.479.630,78</div><div class="src-desc">5 illegale Wohngebäude ohne Lizenz, ANEI Sant Joan de Labritja — Consell Insular bestätigt Sanktion</div><div class="src-meta">Periódico de Ibiza · 27. Feb. 2026</div><div class="src-url">periodicodeibiza.es/pitiusas/ibiza/2026/02/27/2578949/propietary-expedientada-por-obras-ilegales-sant-joan-tiene-seis-meses-para-presentar-proyecto-demolicion.html</div><div class="src-law">LUIB Art. 167 — 250% Bauwert bei infracción muy grave, suelo rústico protegido ANEI</div></div></div>
+    <div class="src"><div class="src-n">[2]</div><div><div class="src-desc">Gleicher Fall — unabhängige Zweitquelle</div><div class="src-meta">La Voz de Ibiza · 27. Feb. 2026</div><div class="src-url">lavozdeibiza.com/actualidad/multa-millonaria-por-construir-en-ibiza-tres-viviendas-piscina-y-anfiteatro-en-suelo-rustico-protegido/</div></div></div>
+    <div class="src"><div class="src-n">[3]</div><div><div class="src-desc">Gleicher Fall — dritte unabhängige Quelle</div><div class="src-meta">Noudiari.es · 27. Feb. 2026</div><div class="src-url">noudiari.es/local-ibiza/seis-meses-para-derribar-cinco-obras-ilegales-en-suelo-protegido-de-ibiza-y-sancion-de-15-millones</div></div></div>
+    <div class="src"><div class="src-n">[4]</div><div><div class="src-amt">€312.000 + €674.000 (referenziert)</div><div class="src-desc">Obras sin licencia — Baumaßnahmen ohne Genehmigung, ANEI-Bereich</div><div class="src-meta">OKDiario Baleares · 13. Jan. 2024</div><div class="src-url">okdiario.com/baleares/300-000-euros-multa-dueno-vivienda-ibiza-hacer-obras-sin-licencia-12208064</div><div class="src-law">LUIB Art. 167.1 — 100–250% des Bauwerts bei obras sin licencia</div></div></div>
+  </div>
+</div>
+
+<div class="expand-note"><strong>Hinweis · Weitere Anwendungsfelder:</strong> Die eingesetzte Technologie ermöglicht darüber hinaus weitere Anwendungsfelder — darunter die systematische Dokumentation illegaler Bausubstanz im urbanen Bereich sowie die Analyse von Verkehrsströmen. Diese sind nicht Gegenstand des vorliegenden MVP, stehen jedoch für künftige Ausbaustufen zur Verfügung.</div>
+
+<!-- TECH -->
+<div class="sec">
+  <div class="sec-hd"><span class="sec-n">02</span><span class="sec-t">Technologie-Stack</span><div class="sec-line"></div></div>
+  <div class="tech-grid">
+    <div class="tc"><div class="tc-tag">Google DeepMind · Apr 2026</div><div class="tc-n">AlphaEarth Foundations</div><div class="tc-d">Satellitenbasis + historische Veränderungsanalyse. NDVI für Früherkennung abgestorbener Vegetation.</div></div>
+    <div class="tc"><div class="tc-tag">Google Earth Engine</div><div class="tc-n">Raster Layer + Zeitreihen</div><div class="tc-d">Globale Umweltdaten. Zeitvergleich Vorjahr vs. aktuell. 128m Auflösung weltweit.</div></div>
+    <div class="tc"><div class="tc-tag">Roboflow · ICLR 2026</div><div class="tc-n">RF-DETR</div><div class="tc-d">SOTA-Modell fine-tuned auf Ibiza-Baumarten: Pinie, Johannisbrot, Olive, Mandel + Rodungsverdacht.</div></div>
+    <div class="tc"><div class="tc-tag">Roboflow · MIT-Lizenz</div><div class="tc-n">Supervision + Inference</div><div class="tc-d">Zählung, Annotation, Tracking. Open Source, behördenkonform, Edge-fähig.</div></div>
+    <div class="tc"><div class="tc-tag">Ask Google Earth</div><div class="tc-n">Gemini Geo-Intelligence</div><div class="tc-d">Natürlichsprachliche Abfragen direkt im System. Verdachtsflächen auf Knopfdruck identifizieren.</div></div>
+    <div class="tc"><div class="tc-tag">Output</div><div class="tc-n">GeoJSON + PDF-Reports</div><div class="tc-d">Behördengerechter Export. Alert-System. Rechtssichere Zeitstempel-Archivierung.</div></div>
+  </div>
+</div>
+
+<!-- TIMELINE -->
+<div class="sec">
+  <div class="sec-hd"><span class="sec-n">03</span><span class="sec-t">Projektplan · Mai–November 2026</span><div class="sec-line"></div></div>
+  <div class="tl">
+    <div class="tl-item"><div class="tl-w">Mai 2026</div><div class="tl-sp"><div class="tl-dot" style="background:var(--glow)"></div><div class="tl-ln"></div></div><div><div class="tl-ph" style="color:var(--glow)">Bewerbung · Aktiv</div><div class="tl-tx">Einreichung Konzept + Bewerbungsschreiben beim Consell Insular d'Eivissa. Ziel: innerhalb 2 Wochen.</div></div></div>
+    <div class="tl-item"><div class="tl-w">15. Jun</div><div class="tl-sp"><div class="tl-dot"></div><div class="tl-ln"></div></div><div><div class="tl-ph">Kickoff</div><div class="tl-tx">Team-Setup. Verträge. Satellitendaten-Zugang Inselbehörde. AlphaEarth + Earth Engine Konfiguration.</div></div></div>
+    <div class="tl-item"><div class="tl-w">Jun Wo.3–4</div><div class="tl-sp"><div class="tl-dot"></div><div class="tl-ln"></div></div><div><div class="tl-ph">Phase 1 · Daten</div><div class="tl-tx">Satellitendaten aufbereiten. Tile-Splitting. Annotation Ibiza-Baumarten vor Ort. NDVI-Index. Roboflow-Dataset.</div></div></div>
+    <div class="tl-item"><div class="tl-w">Juli</div><div class="tl-sp"><div class="tl-dot"></div><div class="tl-ln"></div></div><div><div class="tl-ph">Phase 2 · Training</div><div class="tl-tx">RF-DETR Fine-Tuning. Klassen: gesunder Baum / kranker Baum / Stumpf / Rodungsverdacht / illegaler Bau.</div></div></div>
+    <div class="tl-item"><div class="tl-w">August</div><div class="tl-sp"><div class="tl-dot" style="background:var(--border);border-color:var(--border)"></div><div class="tl-ln"></div></div><div><div class="tl-ph" style="color:var(--border)">Temporada Alta · Pause</div><div class="tl-tx" style="color:var(--border)">Strategische Pause. Tech-Team arbeitet remote an Dashboard-Architektur. Keine Feldeinsätze.</div></div></div>
+    <div class="tl-item"><div class="tl-w">September</div><div class="tl-sp"><div class="tl-dot"></div><div class="tl-ln"></div></div><div><div class="tl-ph">Phase 3 · Dashboard</div><div class="tl-tx">Interaktive Karte mit Erkennungs-Overlay. Alert-System. GeoJSON + PDF-Export. DSGVO-Audit.</div></div></div>
+    <div class="tl-item"><div class="tl-w">Oktober</div><div class="tl-sp"><div class="tl-dot"></div><div class="tl-ln"></div></div><div><div class="tl-ph">Phase 4 · Review</div><div class="tl-tx">Testing mit Realdaten. LUIB-Rechtssicherheit. Dokumentationsübergabe. Schulung Consell-Mitarbeiter.</div></div></div>
+    <div class="tl-item"><div class="tl-w">Nov 2026</div><div class="tl-sp"><div class="tl-dot" style="background:var(--glow)"></div><div class="tl-ln" style="display:none"></div></div><div><div class="tl-ph" style="color:var(--glow)">Go-Live · 24/7</div><div class="tl-tx">Vollautomatische Überwachung. 572 km² Eivissa. Erstes Alert-Report an Consell.</div></div></div>
+  </div>
+</div>
+
+<!-- TEAM -->
+<div class="sec">
+  <div class="sec-hd"><span class="sec-n">04</span><span class="sec-t">Team</span><div class="sec-line"></div></div>
+  <div class="team-grid">
+    <div class="tm"><div class="tm-role">Project Lead</div><div class="tm-name">Andreas Roßmann</div><div class="tm-detail">PM · Strategie · Behördenkontakt · Ibiza-Expertise</div></div>
+    <div class="tm"><div class="tm-role">KI-Koordination</div><div class="tm-name">Claude (Anthropic)</div><div class="tm-detail">Dokumentation · Analyse · Modell-Support · API</div></div>
+    <div class="tm"><div class="tm-role">Field Operations · Eivissa</div><div class="tm-name">N.N. *</div><div class="tm-detail">Baumbestand · Genehmigungen · DE/ES/EN/CA · Vor-Ort-Verifikation</div><div class="tm-pending">* Bestätigung ausstehend</div></div>
+    <div class="tm"><div class="tm-role">Computer Vision</div><div class="tm-name">CV Engineer</div><div class="tm-detail">RF-DETR Training · Roboflow · Vollzeit MVP</div></div>
+    <div class="tm"><div class="tm-role">Frontend</div><div class="tm-name">Dashboard Dev</div><div class="tm-detail">Karte · Alerts · Reports · 2–3 Wochen</div></div>
+    <div class="tm"><div class="tm-role">GIS-Beratung</div><div class="tm-name">GIS-Spezialist</div><div class="tm-detail">Geodaten · Koordinatensysteme · 1–2 Wochen</div></div>
+    <div class="tm ph"><div class="tm-role">Asesor del Consell</div><div class="tm-name">N.N.</div><div class="tm-detail">Interner Ansprechpartner · Consell Insular · Verwaltung</div><div class="tm-pending">Position offen</div></div>
+    <div class="tm ph"><div class="tm-role">Asesor Jurídico</div><div class="tm-name">N.N.</div><div class="tm-detail">LUIB Art. 166/167/196 · Verwaltungsrecht Baleares</div><div class="tm-pending">Position offen</div></div>
+    <div class="tm ph"><div class="tm-role">Datenschutz</div><div class="tm-name">N.N.</div><div class="tm-detail">DSGVO-Konformität · Behördliche Datensicherheit</div><div class="tm-pending">Position offen</div></div>
+  </div>
+</div>
+
+<div class="legal"><p><strong>Rechtliche Grundlage:</strong> Der Consell Insular d'Eivissa ist zuständig für Suelo Rústico, ANEI, ARIP und APT-Costas (LUIB Art. 166). Verstöße verjähren nicht in Schutzgebieten (Art. 196.2 LUIB). Das System liefert rechtssichere, zeitgestempelte Dokumentation direkt verwertbar in Sanktionsverfahren.</p></div>
+
+<div class="cta">
+  <div class="cta-h">Eivissa verdient<br><em>besseren Schutz.</em></div>
+  <div class="cta-meta"><strong>Silent Monkey Solution</strong>Andreas Roßmann · Berlin / Eivissa<br>silentmonkey.io · v0.7 · Mai 2026<br>Vertraulich — nicht zur Weitergabe</div>
+</div>
+
+<div class="conf-stamp">Guardián de Eivissa · Silent Monkey Solution · Konzept v0.7 · Mai 2026 · Vertraulich</div>
+
+</div>
+</body>
+</html>
