@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact · Silent Monkey · Boutique Digital Consulting</title>
+<meta name="description" content="Get in touch with Silent Monkey — Boutique Digital Consulting. Book a free call or send a message.">
+<meta name="author" content="Andreas Roßmann">
+<meta name="robots" content="index, follow">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Contact Silent Monkey",
+  "url": "https://silentmonkey.io/contact",
+  "publisher": {
+    "@type": "ProfessionalService",
+    "name": "Silent Monkey — Boutique Digital Consulting",
+    "url": "https://silentmonkey.io"
+  },
+  "inLanguage": ["en", "de", "es"]
+}
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap');
+
+:root {
+  --ink: #1a1814;
+  --ink-2: #231f1a;
+  --warm: #f5f2ec;
+  --muted: #8a7d6b;
+  --border: #3a342c;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --mono: 'Space Mono', 'Courier New', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--mono);
+  background: var(--ink);
+  color: var(--warm);
+  font-size: 12px;
+  line-height: 1.6;
+  padding: 3rem 2rem;
+}
+
+.wrap { max-width: 860px; margin: 0 auto; }
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 0.5px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.logo {
+  font-size: 10px;
+  letter-spacing: .2em;
+  color: var(--muted);
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.logo span { color: var(--warm); }
+
+.lang-switch { display: flex; gap: 1rem; }
+
+.lang-btn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .15em;
+  cursor: pointer;
+  text-transform: uppercase;
+  padding: 0;
+}
+.lang-btn.active { color: var(--warm); border-bottom: 0.5px solid var(--warm); }
+.lang-btn:hover { color: var(--warm); }
+
+.hero { margin-bottom: 2.5rem; }
+
+.hero-lbl {
+  font-size: 9px;
+  letter-spacing: .22em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.hero-h {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 3rem;
+  color: var(--warm);
+  line-height: 1.02;
+  margin-bottom: 1rem;
+}
+
+.hero-sub {
+  font-size: 11px;
+  color: var(--muted);
+  max-width: 480px;
+  line-height: 1.9;
+}
+
+.cta-call {
+  display: inline-block;
+  margin: 2rem 0 3rem;
+  padding: 0.75rem 2rem;
+  background: var(--warm);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.cta-call:hover { opacity: 0.85; }
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+.divider-line { flex: 1; height: 0.5px; background: var(--border); }
+.divider-lbl {
+  font-size: 9px;
+  letter-spacing: .2em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* Form */
+.contact-form { max-width: 580px; }
+
+.form-group { margin-bottom: 1.5rem; }
+
+.form-label {
+  display: block;
+  font-size: 9px;
+  letter-spacing: .2em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  background: var(--ink-2);
+  border: 0.5px solid var(--border);
+  color: var(--warm);
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 0.75rem 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.form-input:focus,
+.form-textarea:focus { border-color: var(--warm); }
+
+.form-textarea { resize: vertical; min-height: 140px; }
+
+.form-file-wrapper {
+  position: relative;
+  border: 0.5px dashed var(--border);
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.form-file-wrapper:hover { border-color: var(--muted); }
+
+.form-file {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+}
+
+.form-file-lbl {
+  font-size: 9px;
+  letter-spacing: .15em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.form-file-name {
+  font-size: 10px;
+  color: var(--warm);
+  margin-top: 0.4rem;
+}
+
+.form-submit {
+  background: var(--warm);
+  color: var(--ink);
+  border: none;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  padding: 0.75rem 2.5rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  margin-top: 0.5rem;
+}
+.form-submit:hover { opacity: 0.85; }
+
+.form-success {
+  display: none;
+  padding: 1.5rem;
+  border: 0.5px solid var(--border);
+  background: var(--ink-2);
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.9;
+  margin-top: 1rem;
+}
+
+.content { display: none; }
+.content.active { display: block; }
+
+.footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 0.5px solid var(--border);
+  font-size: 9px;
+  letter-spacing: .12em;
+  color: var(--muted);
+  display: flex;
+  gap: 2rem;
+}
+.footer a { color: var(--muted); text-decoration: none; }
+.footer a:hover { color: var(--warm); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <a href="/" class="logo">silent<span>_</span>monkey · io</a>
+    <div class="lang-switch">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('de')">DE</button>
+      <button class="lang-btn" onclick="setLang('es')">ES</button>
+    </div>
+  </div>
+
+  <!-- EN -->
+  <div class="content active" id="content-en">
+    <div class="hero">
+      <div class="hero-lbl">Contact</div>
+      <h1 class="hero-h">Let's talk.</h1>
+      <p class="hero-sub">Book a free 30-minute call — or send a message directly. Briefings, project files and specs are welcome.</p>
+    </div>
+
+    <a href="https://cal.eu/silent-monkey/silent-monkey-audit" target="_blank" class="cta-call">→ Book a free call</a>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <div class="divider-lbl">or send a message</div>
+      <div class="divider-line"></div>
+    </div>
+
+    <form class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="_subject" value="New message from silentmonkey.io">
+      <input type="hidden" name="_language" value="en">
+
+      <div class="form-group">
+        <label class="form-label" for="name-en">Name</label>
+        <input class="form-input" type="text" id="name-en" name="name" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email-en">Email</label>
+        <input class="form-input" type="email" id="email-en" name="email" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="message-en">Message</label>
+        <textarea class="form-textarea" id="message-en" name="message" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Attachment (optional)</label>
+        <div class="form-file-wrapper">
+          <input class="form-file" type="file" name="attachment" id="file-en" accept=".pdf,.doc,.docx,.zip,.png,.jpg">
+          <div class="form-file-lbl">Drop file or click to upload</div>
+          <div class="form-file-name" id="file-name-en"></div>
+        </div>
+      </div>
+
+      <button class="form-submit" type="submit">Send message →</button>
+    </form>
+  </div>
+
+  <!-- DE -->
+  <div class="content" id="content-de">
+    <div class="hero">
+      <div class="hero-lbl">Kontakt</div>
+      <h1 class="hero-h">Lass uns reden.</h1>
+      <p class="hero-sub">Buche ein kostenloses 30-Minuten-Gespräch — oder schick direkt eine Nachricht. Briefings, Projektdateien und Specs sind willkommen.</p>
+    </div>
+
+    <a href="https://cal.eu/silent-monkey/silent-monkey-audit" target="_blank" class="cta-call">→ Kostenloses Gespräch buchen</a>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <div class="divider-lbl">oder Nachricht senden</div>
+      <div class="divider-line"></div>
+    </div>
+
+    <form class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="_subject" value="Neue Nachricht von silentmonkey.io">
+      <input type="hidden" name="_language" value="de">
+
+      <div class="form-group">
+        <label class="form-label" for="name-de">Name</label>
+        <input class="form-input" type="text" id="name-de" name="name" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email-de">E-Mail</label>
+        <input class="form-input" type="email" id="email-de" name="email" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="message-de">Nachricht</label>
+        <textarea class="form-textarea" id="message-de" name="message" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Anhang (optional)</label>
+        <div class="form-file-wrapper">
+          <input class="form-file" type="file" name="attachment" id="file-de" accept=".pdf,.doc,.docx,.zip,.png,.jpg">
+          <div class="form-file-lbl">Datei ablegen oder klicken</div>
+          <div class="form-file-name" id="file-name-de"></div>
+        </div>
+      </div>
+
+      <button class="form-submit" type="submit">Nachricht senden →</button>
+    </form>
+  </div>
+
+  <!-- ES -->
+  <div class="content" id="content-es">
+    <div class="hero">
+      <div class="hero-lbl">Contacto</div>
+      <h1 class="hero-h">Hablemos.</h1>
+      <p class="hero-sub">Reserva una llamada gratuita de 30 minutos — o envía un mensaje directamente. Bienvenidos briefings, archivos de proyecto y especificaciones.</p>
+    </div>
+
+    <a href="https://cal.eu/silent-monkey/silent-monkey-audit" target="_blank" class="cta-call">→ Reservar llamada gratuita</a>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <div class="divider-lbl">o enviar un mensaje</div>
+      <div class="divider-line"></div>
+    </div>
+
+    <form class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="_subject" value="Nuevo mensaje de silentmonkey.io">
+      <input type="hidden" name="_language" value="es">
+
+      <div class="form-group">
+        <label class="form-label" for="name-es">Nombre</label>
+        <input class="form-input" type="text" id="name-es" name="name" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email-es">Email</label>
+        <input class="form-input" type="email" id="email-es" name="email" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="message-es">Mensaje</label>
+        <textarea class="form-textarea" id="message-es" name="message" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Adjunto (opcional)</label>
+        <div class="form-file-wrapper">
+          <input class="form-file" type="file" name="attachment" id="file-es" accept=".pdf,.doc,.docx,.zip,.png,.jpg">
+          <div class="form-file-lbl">Soltar archivo o hacer clic</div>
+          <div class="form-file-name" id="file-name-es"></div>
+        </div>
+      </div>
+
+      <button class="form-submit" type="submit">Enviar mensaje →</button>
+    </form>
+  </div>
+
+  <div class="footer">
+    <a href="/">← back</a>
+    <a href="/privacy">Privacy Policy</a>
+    <a href="/imprint">Imprint</a>
+    <a href="/terms">Terms</a>
+  </div>
+
+</div>
+
+<script>
+const titles = {
+  en: 'Contact',
+  de: 'Kontakt',
+  es: 'Contacto'
+};
+
+function setLang(lang) {
+  document.querySelectorAll('.content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.lang-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('content-' + lang).classList.add('active');
+  document.querySelector('[onclick="setLang(\'' + lang + '\')"]').classList.add('active');
+  document.documentElement.lang = lang;
+  localStorage.setItem('sm_lang', lang);
+}
+
+// File name display
+['en','de','es'].forEach(lang => {
+  const input = document.getElementById('file-' + lang);
+  const label = document.getElementById('file-name-' + lang);
+  if (input && label) {
+    input.addEventListener('change', () => {
+      label.textContent = input.files[0] ? input.files[0].name : '';
+    });
+  }
+});
+
+const saved = localStorage.getItem('sm_lang');
+if (saved && saved !== 'en') setLang(saved);
+</script>
+
+<script src="../shared/cookie-banner.js"></script>
+</body>
+</html>
