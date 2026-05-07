@@ -1,41 +1,23 @@
 {
+  "redirects": [
+    { "source": "/impresssum", "destination": "/imprint", "permanent": true },
+    { "source": "/dsgvo", "destination": "/privacy", "permanent": true },
+    { "source": "/agbde", "destination": "/gtc", "permanent": true },
+    { "source": "/terms", "destination": "/gtc", "permanent": true }
+  ],
   "rewrites": [
     {
       "has": [{ "type": "host", "value": "audit.silentmonkey.io" }],
       "source": "/(.*)",
       "destination": "/audit/$1"
     },
-    {
-      "source": "/making-of(.*)",
-      "destination": "/making-of$1"
-    },
-    {
-      "source": "/contact(.*)",
-      "destination": "/contact$1"
-    },
-    {
-      "source": "/cases(.*)",
-      "destination": "/cases$1"
-    },
-    {
-      "source": "/imprint(.*)",
-      "destination": "/imprint$1"
-    },
-    {
-      "source": "/privacy(.*)",
-      "destination": "/privacy$1"
-    },
-    {
-      "source": "/terms(.*)",
-      "destination": "/terms$1"
-    },
-    {
-      "source": "/",
-      "destination": "/main/index.html"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/main/$1"
-    }
+    { "source": "/making-of(.*)", "destination": "/making-of$1" },
+    { "source": "/contact(.*)", "destination": "/contact$1" },
+    { "source": "/cases(.*)", "destination": "/cases$1" },
+    { "source": "/imprint(.*)", "destination": "/imprint$1" },
+    { "source": "/privacy(.*)", "destination": "/privacy$1" },
+    { "source": "/gtc(.*)", "destination": "/gtc$1" },
+    { "source": "/", "destination": "/main/index.html" },
+    { "source": "/(.*)", "destination": "/main/$1" }
   ]
 }
