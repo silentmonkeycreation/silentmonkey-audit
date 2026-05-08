@@ -4,26 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Making Of — Silent Monkey Solution</title>
-  <link rel="icon" type="image/png" sizes="32x32" href="/shared/robot-logo-black.png">
-  <link rel="stylesheet" href="/shared/style.css">
-  <!-- SEO Meta Tags -->
-<meta name="description" content="Making Of — Silent Monkey Solution. The story behind the design decisions, tech stack and philosophy of silentmonkey.io.">
-<meta name="keywords" content="making of, silent monkey, design decisions, tech stack, behind the scenes">
-<meta name="author" content="Andreas Roßmann">
-<meta name="robots" content="index, follow">
-
-<!-- Open Graph -->
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://silentmonkey.io/making-of">
-<meta property="og:title" content="Making Of — Silent Monkey Solution">
-<meta property="og:description" content="The story behind the design decisions, tech stack and philosophy of silentmonkey.io.">
-<meta property="og:image" content="https://silentmonkey.io/shared/icon-dark.svg">
-
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Making Of — Silent Monkey Solution">
-<meta name="twitter:description" content="The story behind the design decisions, tech stack and philosophy.">
-<meta name="twitter:image" content="https://silentmonkey.io/shared/icon-dark.svg">
+<!-- SM · making-of/index.html · v2.0 · 2026-05-08 -->
+<link rel="icon" type="image/png" sizes="32x32" href="/shared/robot-logo-black.png">
+<link rel="stylesheet" href="/shared/style.css">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -562,73 +545,7 @@
 
 <div class="sep"></div>
 
-<!-- ── 07 · ADR ── -->
-<div class="section">
-  <div class="section-num">07 · Architecture Decisions</div>
-  <h2 class="section-title rv">DECISIONS <em>THAT STICK.</em></h2>
-  <p class="section-body rv">
-    Architecture Decision Records document the choices that shape the project — not just what was decided, but why. Every ADR is a commitment. Once closed, it doesn't get reopened without a new Sprint Goal.
-  </p>
-
-  <!-- ADR-001 -->
-  <div class="quote-block rv" style="margin-bottom:1.5rem;">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;">
-      <span style="font-family:var(--font-m);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);">ADR-001</span>
-      <span style="font-family:var(--font-m);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--green);border:1px solid rgba(74,140,92,.3);padding:.2rem .6rem;">✓ Decided</span>
-    </div>
-    <div style="font-family:var(--font-d);font-size:1.4rem;letter-spacing:.04em;color:var(--white);margin-bottom:.75rem;line-height:1;">ONE DOMAIN. ZERO DOUBT.</div>
-    <p class="quote-text" style="font-style:normal;font-size:.82rem;margin-bottom:.75rem;">Single root domain <code style="font-family:var(--font-m);font-size:.78rem;color:var(--gold);background:rgba(212,168,75,.08);padding:.1rem .4rem;">silentmonkey.io</code> with subdomains. No parallel domains, no split identity. silentmonkey.solutions and andreasrossmann.de → 301 redirect.</p>
-    <span class="quote-author">2026-04 · Status: Closed · No revision</span>
-  </div>
-
-  <!-- ADR-002 -->
-  <div class="quote-block rv" style="margin-bottom:1.5rem;">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;">
-      <span style="font-family:var(--font-m);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);">ADR-002</span>
-      <span style="font-family:var(--font-m);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--green);border:1px solid rgba(74,140,92,.3);padding:.2rem .6rem;">✓ Decided</span>
-    </div>
-    <div style="font-family:var(--font-d);font-size:1.4rem;letter-spacing:.04em;color:var(--white);margin-bottom:.75rem;line-height:1;">VERCEL OVER GHOST — FOR NOW.</div>
-    <p class="quote-text" style="font-style:normal;font-size:.82rem;margin-bottom:.75rem;">Ghost CMS was evaluated as the primary stack. Mid-Sprint Retrospective outcome: overengineered for current scope. Custom HTML/CSS on Vercel — full control, zero CMS overhead, €29/mo saved. Ghost deferred to Backlog, not discarded.</p>
-    <span class="quote-author">2026-02 · Status: Closed · Ghost remains in Backlog as future option</span>
-  </div>
-
-  <!-- ADR-003 -->
-  <div class="quote-block rv" style="margin-bottom:1.5rem;">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;">
-      <span style="font-family:var(--font-m);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);">ADR-003</span>
-      <span style="font-family:var(--font-m);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--green);border:1px solid rgba(74,140,92,.3);padding:.2rem .6rem;">✓ Decided</span>
-    </div>
-    <div style="font-family:var(--font-d);font-size:1.4rem;letter-spacing:.04em;color:var(--white);margin-bottom:.75rem;line-height:1;">TWO PILLARS. NO THIRD.</div>
-    <p class="quote-text" style="font-style:normal;font-size:.82rem;margin-bottom:.75rem;">Three-pillar model (Consulting · Solutions · Creation) evaluated and rejected. Solutions pillar dissolved into Consulting. Final model: Consulting + Creation. Fewer offerings, sharper positioning. audit.silentmonkey.io serves both.</p>
-    <span class="quote-author">2026-04 · Status: Closed · Three-pillar model archived</span>
-  </div>
-
-  <!-- ADR-004 -->
-  <div class="quote-block rv" style="margin-bottom:1.5rem;">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;">
-      <span style="font-family:var(--font-m);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);">ADR-004</span>
-      <span style="font-family:var(--font-m);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--green);border:1px solid rgba(74,140,92,.3);padding:.2rem .6rem;">✓ Decided</span>
-    </div>
-    <div style="font-family:var(--font-d);font-size:1.4rem;letter-spacing:.04em;color:var(--white);margin-bottom:.75rem;line-height:1;">NETLIFY → VERCEL.</div>
-    <p class="quote-text" style="font-style:normal;font-size:.82rem;margin-bottom:.75rem;">Initial deployment on Netlify. Migrated to Vercel for tighter GitHub integration, instant HTTPS, and superior DX. Auto-deploy pipeline: every push to main triggers a release. Decision made in Sprint 7, zero downtime migration.</p>
-    <span class="quote-author">2026-04 · Status: Closed · Netlify account decommissioned</span>
-  </div>
-
-  <!-- ADR-005 -->
-  <div class="quote-block rv" style="border-left-color:var(--gold);background:rgba(212,168,75,.06);">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;">
-      <span style="font-family:var(--font-m);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);">ADR-005</span>
-      <span style="font-family:var(--font-m);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(212,168,75,.4);padding:.2rem .6rem;">✓ Decided · 2026-05-07</span>
-    </div>
-    <div style="font-family:var(--font-d);font-size:1.4rem;letter-spacing:.04em;color:var(--white);margin-bottom:.75rem;line-height:1;">ENGLISH IS CANONICAL.</div>
-    <p class="quote-text" style="font-style:normal;font-size:.82rem;margin-bottom:1rem;">silentmonkey.io is English-first. All routes, filenames, and folder names in English — <code style="font-family:var(--font-m);font-size:.78rem;color:var(--gold);background:rgba(212,168,75,.08);padding:.1rem .4rem;">/imprint</code> · <code style="font-family:var(--font-m);font-size:.78rem;color:var(--gold);background:rgba(212,168,75,.08);padding:.1rem .4rem;">/privacy</code> · <code style="font-family:var(--font-m);font-size:.78rem;color:var(--gold);background:rgba(212,168,75,.08);padding:.1rem .4rem;">/gtc</code>. German and Spanish are delivered as optional overlays via the language switch. No structural element is named in any other language.</p>
-    <p style="font-size:.78rem;color:var(--muted);line-height:1.7;margin-bottom:.75rem;"><strong style="color:var(--white);font-weight:400;">Rationale:</strong> A boutique consulting business operating across DE, ES, and international markets needs a neutral, unambiguous structural base. English is that base. Translations follow the content — they don't define the architecture.<br><br>
-    <strong style="color:var(--white);font-weight:400;">Consequences:</strong> Existing routes (<code style="font-family:var(--font-m);font-size:.76rem;color:var(--muted);">/impresssum · /dsgvo · /agbde</code>) receive 301 redirects. Language switch uses EN as canonical fallback.</p>
-    <span class="quote-author">2026-05-07 · Status: Closed · No revision · EN = canonical</span>
-  </div>
-
-</div>
-
+<!-- ── 01 · SCRUM BOARD ── -->
 <div class="section">
   <div class="section-num">01 · Process</div>
   <h2 class="section-title rv">THE <em>BOARD.</em></h2>
@@ -651,10 +568,21 @@
       <div class="sprint-card done-card"><span class="card-tag">PM</span>Proyex.io — portal.silentmonkey.io verified</div>
       <div class="sprint-card done-card"><span class="card-tag">UX</span>Language switcher EN/DE/ES — Claude API</div>
       <div class="sprint-card done-card"><span class="card-tag">Strategy</span>Two-pillar model: Consulting + Creation</div>
+      <div class="sprint-card done-card"><span class="card-tag">Legal</span>Routes: /imprint · /privacy · /gtc — live</div>
+      <div class="sprint-card done-card"><span class="card-tag">Infrastructure</span>301 Redirects — /impresssum · /dsgvo · /agbde</div>
+      <div class="sprint-card done-card"><span class="card-tag">Architecture</span>ADR-005 — English as canonical language</div>
+      <div class="sprint-card done-card"><span class="card-tag">Infrastructure</span>vercel.json — JSON syntax fix, deploy restored</div>
+      <div class="sprint-card done-card"><span class="card-tag">Design</span>shared/style.css — Bebas Neue · DM Mono · live</div>
+      <div class="sprint-card done-card"><span class="card-tag">SEO</span>Favicon — robot-logo-black.png · all pages</div>
+      <div class="sprint-card done-card"><span class="card-tag">Content</span>Making-Of — ADR-Section · Timeline Sprint B</div>
+      <div class="sprint-card done-card"><span class="card-tag">Domain</span>andreasrossmann.de + silentmonkey.solutions — no renewal</div>
+      <div class="sprint-card done-card"><span class="card-tag">Repo</span>shared/ — robot logos renamed · files cleaned</div>
     </div>
     <div class="sprint-col">
       <div class="sprint-col-header doing">→ In Progress</div>
-      <div class="sprint-card doing-card"><span class="card-tag">Legal</span>Impressum & Datenschutz — in progress</div>
+      <div class="sprint-card doing-card"><span class="card-tag">Legal</span>Imprint content — wartet auf NIF (Jul/Sep 2026)</div>
+      <div class="sprint-card doing-card"><span class="card-tag">Legal</span>Privacy + GTC content — wartet auf DSGVO-Text</div>
+      <div class="sprint-card doing-card"><span class="card-tag">Design</span>OG-Image — wartet auf Bebas Neue font access</div>
       <div class="sprint-card doing-card"><span class="card-tag">Email</span>andreas@silentmonkey.io via Proton Mail</div>
       <div class="sprint-card doing-card"><span class="card-tag">Content</span>Making-Of · Case Studies · Insights</div>
       <div class="sprint-card doing-card"><span class="card-tag">Payments</span>Stripe ES — pending Autónomo registration</div>
@@ -662,6 +590,10 @@
     </div>
     <div class="sprint-col">
       <div class="sprint-col-header todo">○ Backlog</div>
+      <div class="sprint-card todo-card"><span class="card-tag">Legal</span>Cookie Banner — Klaro (open-source · Berlin)</div>
+      <div class="sprint-card todo-card"><span class="card-tag">SEO</span>JSON-LD / Schema.org — alle Seiten</div>
+      <div class="sprint-card todo-card"><span class="card-tag">Infrastructure</span>Google Fonts — lokal hosten (shared/fonts/)</div>
+      <div class="sprint-card todo-card"><span class="card-tag">Email</span>hello@silentmonkey.io setup</div>
       <div class="sprint-card todo-card"><span class="card-tag">Tool</span>PDF Report Feature — Audit Tool</div>
       <div class="sprint-card todo-card"><span class="card-tag">Tool</span>Carbon API + Security backend</div>
       <div class="sprint-card todo-card"><span class="card-tag">Content</span>Case Studies — Ibiza Voices · V¡STOR</div>
@@ -822,6 +754,11 @@
       <div class="timeline-title">v21 · Pipeline · Strategic Refinement</div>
       <div class="timeline-body">Sprint Goal: Production-grade deployment pipeline and strategic scope alignment. Migrated from Netlify to Vercel with GitHub auto-deploy — every commit triggers a Release. Homepage reached v21: fully English, trilingual language switcher shipped as a User Story, Claude API integrated. Backlog decision: Solution pillar dropped, Two-Pillar model accepted as new Product Vision. audit.silentmonkey.io serves both Consulting and Audit Tool.</div>
     </div>
+    <div class="timeline-item">
+      <div class="timeline-date">May 2026 · Sprint B</div>
+      <div class="timeline-title">Language Architecture & Route Audit</div>
+      <div class="timeline-body">Sprint Goal: Establish English as the canonical language across the entire stack. ADR-005 decided — EN is the structural base, DE/ES are overlays only. Direct consequence: full repo-wide audit of all legacy routes (/impresssum · /dsgvo · /agbde) and systematic replacement with English equivalents (/imprint · /privacy · /gtc). 301 redirects implemented. shared/style.css live. Favicon deployed. andreasrossmann.de + silentmonkey.solutions — renewal cancelled. Small fixes, large principle.</div>
+    </div>
   </div>
 </div>
 
@@ -954,6 +891,67 @@
 
 <div class="sep"></div>
 
+<div class="sep"></div>
+
+<!-- ── 07 · ADR ── -->
+<div class="section">
+  <div class="section-num">07 · Architecture Decisions</div>
+  <h2 class="section-title rv">DECISIONS <em>THAT STICK.</em></h2>
+  <p class="section-body rv">Architecture Decision Records document the choices that shape the project — not just what was decided, but why. Every ADR is a commitment. Once closed, it doesn't get reopened without a new Sprint Goal.</p>
+
+  <div class="quote-block rv" style="margin-bottom:1.5rem;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;">
+      <span style="font-family:var(--font-m);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);">ADR-001</span>
+      <span style="font-family:var(--font-m);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--green);border:1px solid rgba(74,140,92,.3);padding:.2rem .6rem;">✓ Decided</span>
+    </div>
+    <div style="font-family:var(--font-d);font-size:1.4rem;letter-spacing:.04em;color:var(--white);margin-bottom:.75rem;line-height:1;">ONE DOMAIN. ZERO DOUBT.</div>
+    <p class="quote-text" style="font-style:normal;font-size:.82rem;margin-bottom:.75rem;">Single root domain <code style="font-family:var(--font-m);font-size:.78rem;color:var(--gold);background:rgba(212,168,75,.08);padding:.1rem .4rem;">silentmonkey.io</code> with subdomains. No parallel domains, no split identity. silentmonkey.solutions and andreasrossmann.de → 301 redirect.</p>
+    <span class="quote-author">2026-04 · Status: Closed · No revision</span>
+  </div>
+
+  <div class="quote-block rv" style="margin-bottom:1.5rem;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;">
+      <span style="font-family:var(--font-m);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);">ADR-002</span>
+      <span style="font-family:var(--font-m);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--green);border:1px solid rgba(74,140,92,.3);padding:.2rem .6rem;">✓ Decided</span>
+    </div>
+    <div style="font-family:var(--font-d);font-size:1.4rem;letter-spacing:.04em;color:var(--white);margin-bottom:.75rem;line-height:1;">VERCEL OVER GHOST — FOR NOW.</div>
+    <p class="quote-text" style="font-style:normal;font-size:.82rem;margin-bottom:.75rem;">Ghost CMS was evaluated as the primary stack. Mid-Sprint Retrospective outcome: overengineered for current scope. Custom HTML/CSS on Vercel — full control, zero CMS overhead, €29/mo saved. Ghost deferred to Backlog, not discarded.</p>
+    <span class="quote-author">2026-02 · Status: Closed · Ghost remains in Backlog as future option</span>
+  </div>
+
+  <div class="quote-block rv" style="margin-bottom:1.5rem;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;">
+      <span style="font-family:var(--font-m);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);">ADR-003</span>
+      <span style="font-family:var(--font-m);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--green);border:1px solid rgba(74,140,92,.3);padding:.2rem .6rem;">✓ Decided</span>
+    </div>
+    <div style="font-family:var(--font-d);font-size:1.4rem;letter-spacing:.04em;color:var(--white);margin-bottom:.75rem;line-height:1;">TWO PILLARS. NO THIRD.</div>
+    <p class="quote-text" style="font-style:normal;font-size:.82rem;margin-bottom:.75rem;">Three-pillar model (Consulting · Solutions · Creation) evaluated and rejected. Solutions pillar dissolved into Consulting. Final model: Consulting + Creation. Fewer offerings, sharper positioning. audit.silentmonkey.io serves both.</p>
+    <span class="quote-author">2026-04 · Status: Closed · Three-pillar model archived</span>
+  </div>
+
+  <div class="quote-block rv" style="margin-bottom:1.5rem;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;">
+      <span style="font-family:var(--font-m);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);">ADR-004</span>
+      <span style="font-family:var(--font-m);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--green);border:1px solid rgba(74,140,92,.3);padding:.2rem .6rem;">✓ Decided</span>
+    </div>
+    <div style="font-family:var(--font-d);font-size:1.4rem;letter-spacing:.04em;color:var(--white);margin-bottom:.75rem;line-height:1;">NETLIFY → VERCEL.</div>
+    <p class="quote-text" style="font-style:normal;font-size:.82rem;margin-bottom:.75rem;">Initial deployment on Netlify. Migrated to Vercel for tighter GitHub integration, instant HTTPS, and superior DX. Auto-deploy pipeline: every push to main triggers a release. Decision made in Sprint 7, zero downtime migration.</p>
+    <span class="quote-author">2026-04 · Status: Closed · Netlify account decommissioned</span>
+  </div>
+
+  <div class="quote-block rv" style="border-left-color:var(--gold);background:rgba(212,168,75,.06);">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;">
+      <span style="font-family:var(--font-m);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);">ADR-005</span>
+      <span style="font-family:var(--font-m);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(212,168,75,.4);padding:.2rem .6rem;">✓ Decided · 2026-05-07</span>
+    </div>
+    <div style="font-family:var(--font-d);font-size:1.4rem;letter-spacing:.04em;color:var(--white);margin-bottom:.75rem;line-height:1;">ENGLISH IS CANONICAL.</div>
+    <p class="quote-text" style="font-style:normal;font-size:.82rem;margin-bottom:1rem;">silentmonkey.io is English-first. All routes, filenames, and folder names in English — <code style="font-family:var(--font-m);font-size:.78rem;color:var(--gold);background:rgba(212,168,75,.08);padding:.1rem .4rem;">/imprint</code> · <code style="font-family:var(--font-m);font-size:.78rem;color:var(--gold);background:rgba(212,168,75,.08);padding:.1rem .4rem;">/privacy</code> · <code style="font-family:var(--font-m);font-size:.78rem;color:var(--gold);background:rgba(212,168,75,.08);padding:.1rem .4rem;">/gtc</code>. German and Spanish are delivered as optional overlays via the language switch. No structural element is named in any other language.</p>
+    <p style="font-size:.78rem;color:var(--muted);line-height:1.7;margin-bottom:.75rem;"><strong style="color:var(--white);font-weight:400;">Rationale:</strong> A boutique consulting business operating across DE, ES, and international markets needs a neutral, unambiguous structural base. English is that base. Translations follow the content — they don't define the architecture.<br><br>
+    <strong style="color:var(--white);font-weight:400;">Consequences:</strong> Existing routes (<code style="font-family:var(--font-m);font-size:.76rem;color:var(--muted);">/impresssum · /dsgvo · /agbde</code>) receive 301 redirects. Language switch uses EN as canonical fallback.</p>
+    <span class="quote-author">2026-05-07 · Status: Closed · No revision · EN = canonical</span>
+  </div>
+</div>
+
 <!-- ── QUOTE ── -->
 <div class="section" style="border-bottom:none;">
   <div class="quote-block rv">
@@ -1049,8 +1047,5 @@
 </script>
 
 </div><!-- end site-wrapper -->
-  <script src="../shared/cookie-banner.js"></script>
-  </body>
-</html>
 </body>
 </html>
